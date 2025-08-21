@@ -6,80 +6,102 @@
 <meta name="description" content="Calculadora de costos de producción: electricidad, gas y mano de obra por lote o producto." />
 <title>Calculadora de Costos de Producción</title>
 <style>
-  /* Tema basado en azul del logo */
+  :root {
+    --bg: #0b0c0f;
+    --card: #12141a;
+    --muted: #989aa2;
+    --text: #ffffff;
+    --brand: #7c3aed;
+    --brand-2: #22c55e;
+    --stroke: rgba(255,255,255,.08);
+    --radius: 16px;
+  }
   body {
-    font-family: Arial, sans-serif;
-    background: #e6f0ff; /* fondo suave azul */
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    background: radial-gradient(1200px 600px at 80% -10%, rgba(124,58,237,.25), transparent 60%),
+                radial-gradient(1000px 500px at -10% 10%, rgba(34,197,94,.18), transparent 60%),
+                var(--bg);
+    color: var(--text);
     margin: 0; padding: 0;
-    color: #003366; /* azul oscuro para texto */
+    line-height: 1.5;
   }
   header {
     text-align: center;
-    padding: 2rem 1rem;
-    background: #003366; /* azul oscuro */
-    color: #ffffff;
+    padding: 2rem 1rem 1rem;
+    background: transparent;
+    color: var(--text);
   }
   header img {
-    max-width: 180px;
+    max-width: 120px;
     height: auto;
     margin: 0 auto 1rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(124,58,237,.12);
   }
   .container {
-    max-width: 900px;
+    max-width: 700px;
     margin: 2rem auto;
     padding: 0 1rem;
   }
   .card {
-    background: #ffffff;
+    background: var(--card);
+    border: 1px solid var(--stroke);
+    border-radius: var(--radius);
+    box-shadow: 0 4px 16px rgba(124,58,237,.08);
     padding: 1.5rem 2rem;
     margin-bottom: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgb(0 51 102 / 0.15);
-    transition: box-shadow 0.3s ease;
+    transition: box-shadow 0.3s;
   }
   .card:hover {
-    box-shadow: 0 6px 20px rgb(0 51 102 / 0.25);
+    box-shadow: 0 8px 32px rgba(124,58,237,.18);
+  }
+  h1, h3 {
+    color: var(--brand);
+    font-weight: 700;
+    margin-bottom: 1rem;
   }
   h3 {
-    color: #0059b3;
-    margin-bottom: 1rem;
-    font-weight: 700;
-    border-bottom: 2px solid #0059b3;
+    border-bottom: 2px solid var(--brand);
     padding-bottom: 0.3rem;
+    font-size: 1.2rem;
   }
   label {
     display: block;
     font-weight: 700;
     margin-top: 1rem;
+    color: var(--muted);
+    font-size: 0.97rem;
   }
   input, select, button {
     width: 100%;
-    padding: 0.55rem 0.8rem;
+    padding: 0.7rem 1rem;
     margin-top: 0.3rem;
-    border-radius: 6px;
-    border: 1.5px solid #99bbff;
+    border-radius: 10px;
+    border: 1.5px solid var(--stroke);
     font-size: 1rem;
+    background: #0f1116;
+    color: var(--text);
     box-sizing: border-box;
-    transition: border-color 0.3s ease;
+    transition: border-color 0.3s;
   }
   input:focus, select:focus {
-    border-color: #0059b3;
+    border-color: var(--brand);
     outline: none;
-    box-shadow: 0 0 6px #99bbff;
+    box-shadow: 0 0 6px var(--brand);
   }
   button.calc {
-    background: #0059b3;
-    color: #ffffff;
+    background: var(--brand);
+    color: #fff;
     border: none;
     cursor: pointer;
     margin-top: 1rem;
     font-weight: 700;
     font-size: 1.1rem;
-    border-radius: 8px;
-    transition: background-color 0.3s ease;
+    border-radius: 12px;
+    transition: background 0.3s;
   }
   button.calc:hover, button.calc:focus {
-    background: #003366;
+    background: #5b21b6;
   }
   button.clear {
     background: #e60000;
@@ -87,53 +109,54 @@
     font-weight: 700;
     border: none;
     color: white;
-    border-radius: 8px;
+    border-radius: 12px;
     cursor: pointer;
     font-size: 0.95rem;
     width: auto;
     padding: 0.45rem 1rem;
-    transition: background-color 0.3s ease;
+    transition: background 0.3s;
   }
   button.clear:hover, button.clear:focus {
     background: #990000;
   }
   button.copy {
-    background: #007acc;
+    background: var(--brand-2);
     margin-top: 0.5rem;
     font-weight: 700;
     border: none;
     color: white;
-    border-radius: 8px;
+    border-radius: 12px;
     cursor: pointer;
     font-size: 0.95rem;
     width: auto;
     padding: 0.45rem 1rem;
-    transition: background-color 0.3s ease;
+    transition: background 0.3s;
     margin-left: 10px;
   }
   button.copy:hover, button.copy:focus {
-    background: #005f99;
+    background: #15803d;
   }
   .hint {
     font-size: 0.85rem;
-    color: #0059b3;
+    color: var(--muted);
     margin-top: 0.25rem;
   }
   .result {
     margin-top: 1rem;
     padding: 1rem;
-    background: #cce0ff;
-    border-radius: 8px;
+    background: #181a20;
+    border-radius: 12px;
     font-weight: 700;
     font-size: 1.15rem;
-    color: #003366;
+    color: var(--brand);
     min-height: 2.3em;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    border: 1px solid var(--stroke);
   }
   .error {
-    color: #cc0000;
+    color: #ef4444;
     font-weight: 700;
     margin-top: 0.5rem;
   }
@@ -152,6 +175,58 @@
     button.copy {
       margin-left: 0;
     }
+    .container {
+      padding: 0 0.3rem;
+    }
+    .card {
+      padding: 1rem 0.5rem;
+    }
+  }
+  .toast {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #181a20;
+    color: #fff;
+    padding: 0.8em 2em;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 1rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s;
+    z-index: 9999;
+    border: 1px solid var(--stroke);
+  }
+  .toast.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .collapse-content {
+    display: none;
+    transition: max-height 0.3s;
+  }
+  .collapse-content.show {
+    display: block;
+  }
+  .collapse-btn {
+    background: #181a20;
+    color: var(--brand);
+    border: 1.5px solid var(--stroke);
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    padding: 0.45rem 1rem;
+    width: auto;
+    font-size: 1rem;
+    transition: background 0.2s;
+    box-shadow: 0 2px 8px rgba(124,58,237,.08);
+  }
+  .collapse-btn:hover, .collapse-btn:focus {
+    background: #23262f;
   }
 </style>
 </head>
@@ -167,99 +242,111 @@
 
   <!-- ELECTRICIDAD -->
   <section class="card" id="card-electricidad" aria-labelledby="electricidad-title">
-    <h3 id="electricidad-title">Electricidad</h3>
+    <button class="collapse-btn" type="button" onclick="toggleCollapse('collapse-electricidad')" aria-expanded="true" aria-controls="collapse-electricidad">▼ Electricidad</button>
+    <div id="collapse-electricidad" class="collapse-content show">
+      <h3 id="electricidad-title">Electricidad</h3>
 
-    <label for="potencia">Consumo del equipo (W)</label>
-    <input id="potencia" type="number" min="0" step="1" placeholder="Ej: 300" aria-describedby="potenciaHelp" />
-    <div class="hint" id="potenciaHelp">Potencia que consume el equipo, en Watts (ver etiqueta o manual).</div>
+      <label for="potencia">Consumo del equipo (W)</label>
+      <input id="potencia" type="number" min="0" step="1" placeholder="Ej: 300" aria-describedby="potenciaHelp" />
+      <div class="hint" id="potenciaHelp">Potencia que consume el equipo, en Watts (ver etiqueta o manual).</div>
 
-    <label for="tiempoUsoElect">Duración de un lote (h)</label>
-    <input id="tiempoUsoElect" type="number" min="0" step="0.01" placeholder="Ej: 0.5" aria-describedby="tiempoUsoElectHelp" />
-    <div class="hint" id="tiempoUsoElectHelp">Tiempo que el equipo está encendido para producir un lote, en horas.</div>
+      <label for="tiempoUsoElect">Duración de un lote (h)</label>
+      <input id="tiempoUsoElect" type="number" min="0" step="0.01" placeholder="Ej: 0.5" aria-describedby="tiempoUsoElectHelp" />
+      <div class="hint" id="tiempoUsoElectHelp">Tiempo que el equipo está encendido para producir un lote, en horas.</div>
 
-    <label for="frecuencia">Lotes al mes</label>
-    <input id="frecuencia" type="number" min="0" step="1" placeholder="Ej: 10" aria-describedby="frecuenciaHelp" />
-    <div class="hint" id="frecuenciaHelp">Cantidad de lotes que produces en un mes.</div>
+      <label for="frecuencia">Lotes al mes</label>
+      <input id="frecuencia" type="number" min="0" step="1" placeholder="Ej: 10" aria-describedby="frecuenciaHelp" />
+      <div class="hint" id="frecuenciaHelp">Cantidad de lotes que produces en un mes.</div>
 
-    <label for="precioKwh">Costo por kWh de electricidad</label>
-    <input id="precioKwh" type="number" min="0" step="0.0001" placeholder="Ej: 0.20" aria-describedby="precioKwhHelp" />
-    <div class="hint" id="precioKwhHelp">Precio por kWh según tu factura de electricidad.</div>
+      <label for="precioKwh">Costo por kWh de electricidad</label>
+      <input id="precioKwh" type="number" min="0" step="0.0001" placeholder="Ej: 0.20" aria-describedby="precioKwhHelp" />
+      <div class="hint" id="precioKwhHelp">Precio por kWh según tu factura de electricidad.</div>
 
-    <div class="hint">Fórmula: (W × horas × lotes) ÷ 1000 × costo kWh</div>
-    <button class="calc" type="button" onclick="calcularElectricidad()">Calcular Electricidad</button>
-    <div class="result" aria-live="polite" id="resultadoElect">
-      <span class="result-text"></span>
-      <div class="button-group" style="display:none;">
-        <button class="copy" type="button" onclick="copiarResultado('resultadoElect')">Copiar</button>
-        <button class="clear" type="button" onclick="limpiarSeccion('electricidad')">Limpiar</button>
+      <div class="hint">Fórmula: (W × horas × lotes) ÷ 1000 × costo kWh</div>
+      <button class="calc" type="button" onclick="calcularElectricidad()">Calcular Electricidad</button>
+      <div class="result" aria-live="polite" id="resultadoElect">
+        <span class="result-text"></span>
+        <div class="button-group" style="display:none;">
+          <button class="copy" type="button" aria-label="Copiar resultado" onclick="copiarResultado('resultadoElect')">Copiar</button>
+          <button class="clear" type="button" aria-label="Limpiar sección" onclick="limpiarSeccion('electricidad')">Limpiar</button>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- GAS -->
   <section class="card" id="card-gas1" aria-labelledby="gas-title">
-    <h3 id="gas-title">Gas</h3>
+    <button class="collapse-btn" type="button" onclick="toggleCollapse('collapse-gas1')" aria-expanded="true" aria-controls="collapse-gas1">▼ Gas</button>
+    <div id="collapse-gas1" class="collapse-content show">
+      <h3 id="gas-title">Gas</h3>
 
-    <label for="btuCilindro1">Capacidad total de gas del cilindro (BTU)</label>
-    <input id="btuCilindro1" type="number" min="0" step="1" value="91500" aria-describedby="btuCilindroHelp" />
-    <div class="hint" id="btuCilindroHelp">Valor típico para cilindro de 25 lb: 91,500 BTU.</div>
+      <label for="btuCilindro1">Capacidad total de gas del cilindro (BTU)</label>
+      <input id="btuCilindro1" type="number" min="0" step="1" value="91500" aria-describedby="btuCilindroHelp" />
+      <div class="hint" id="btuCilindroHelp">Valor típico para cilindro de 25 lb: 91,500 BTU.</div>
 
-    <label for="btuQuemador1">Potencia del quemador (BTU/h)</label>
-    <select id="btuQuemador1" aria-describedby="btuQuemadorHelp">
-      <option value="">-- Selecciona quemador --</option>
-      <option value="5000">Pequeño: 5,000–8,000 BTU/h</option>
-      <option value="9000">Mediano: 9,000–12,000 BTU/h</option>
-      <option value="15000">Grande: 15,000–18,000 BTU/h</option>
-    </select>
-    <div class="hint" id="btuQuemadorHelp">Revisa las especificaciones del quemador o manual.</div>
+      <label for="btuQuemador1">Potencia del quemador (BTU/h)</label>
+      <select id="btuQuemador1" aria-describedby="btuQuemadorHelp">
+        <option value="">-- Selecciona quemador --</option>
+        <option value="5000">Pequeño: 5,000–8,000 BTU/h</option>
+        <option value="9000">Mediano: 9,000–12,000 BTU/h</option>
+        <option value="15000">Grande: 15,000–18,000 BTU/h</option>
+      </select>
+      <div class="hint" id="btuQuemadorHelp">Revisa las especificaciones del quemador o manual.</div>
 
-    <label for="tiempoUsoGas1">Duración de uso del quemador por lote (h)</label>
-    <input id="tiempoUsoGas1" type="number" min="0" step="0.01" placeholder="Ej: 1" aria-describedby="tiempoUsoGasHelp" />
-    <div class="hint" id="tiempoUsoGasHelp">Tiempo que el quemador está encendido para un lote.</div>
+      <label for="tiempoUsoGas1">Duración de uso del quemador por lote (h)</label>
+      <input id="tiempoUsoGas1" type="number" min="0" step="0.01" placeholder="Ej: 1" aria-describedby="tiempoUsoGasHelp" />
+      <div class="hint" id="tiempoUsoGasHelp">Tiempo que el quemador está encendido para un lote.</div>
 
-    <label for="precioCilindro1">Costo de llenado del cilindro</label>
-    <input id="precioCilindro1" type="number" min="0" step="0.01" placeholder="Ej: 25.00" aria-describedby="precioCilindroHelp" />
-    <div class="hint" id="precioCilindroHelp">Precio que pagas por rellenar o cambiar el cilindro.</div>
+      <label for="precioCilindro1">Costo de llenado del cilindro</label>
+      <input id="precioCilindro1" type="number" min="0" step="0.01" placeholder="Ej: 25.00" aria-describedby="precioCilindroHelp" />
+      <div class="hint" id="precioCilindroHelp">Precio que pagas por rellenar o cambiar el cilindro.</div>
 
-    <div class="hint">Fórmula: (BTU/h × horas) ÷ BTU cilindro × costo cilindro</div>
-    <button class="calc" type="button" onclick="calcularGas(1)">Calcular Gas</button>
-    <div class="result" aria-live="polite" id="resultadoGas1">
-      <span class="result-text"></span>
-      <div class="button-group" style="display:none;">
-        <button class="copy" type="button" onclick="copiarResultado('resultadoGas1')">Copiar</button>
-        <button class="clear" type="button" onclick="limpiarSeccion('gas1')">Limpiar</button>
+      <div class="hint">Fórmula: (BTU/h × horas) ÷ BTU cilindro × costo cilindro</div>
+      <button class="calc" type="button" onclick="calcularGas(1)">Calcular Gas</button>
+      <div class="result" aria-live="polite" id="resultadoGas1">
+        <span class="result-text"></span>
+        <div class="button-group" style="display:none;">
+          <button class="copy" type="button" aria-label="Copiar resultado" onclick="copiarResultado('resultadoGas1')">Copiar</button>
+          <button class="clear" type="button" aria-label="Limpiar sección" onclick="limpiarSeccion('gas1')">Limpiar</button>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- TIEMPO -->
   <section class="card" id="card-tiempo" aria-labelledby="tiempo-title">
-    <h3 id="tiempo-title">Tiempo de trabajo</h3>
+    <button class="collapse-btn" type="button" onclick="toggleCollapse('collapse-tiempo')" aria-expanded="true" aria-controls="collapse-tiempo">▼ Tiempo de trabajo</button>
+    <div id="collapse-tiempo" class="collapse-content show">
+      <h3 id="tiempo-title">Tiempo de trabajo</h3>
 
-    <label for="tiempoLoteMin">Duración total de producción por lote (min)</label>
-    <input id="tiempoLoteMin" type="number" min="0" step="0.1" placeholder="Ej: 120" aria-describedby="tiempoLoteMinHelp" />
-    <div class="hint" id="tiempoLoteMinHelp">Incluye preparación, cocción y empaquetado.</div>
+      <label for="tiempoLoteMin">Duración total de producción por lote (min)</label>
+      <input id="tiempoLoteMin" type="number" min="0" step="0.1" placeholder="Ej: 120" aria-describedby="tiempoLoteMinHelp" />
+      <div class="hint" id="tiempoLoteMinHelp">Incluye preparación, cocción y empaquetado.</div>
 
-    <label for="cantidadProductos">Unidades producidas por lote</label>
-    <input id="cantidadProductos" type="number" min="1" step="1" placeholder="Ej: 20" aria-describedby="cantidadProductosHelp" />
-    <div class="hint" id="cantidadProductosHelp">Cantidad de piezas o productos terminados en un lote.</div>
+      <label for="cantidadProductos">Unidades producidas por lote</label>
+      <input id="cantidadProductos" type="number" min="1" step="1" placeholder="Ej: 20" aria-describedby="cantidadProductosHelp" />
+      <div class="hint" id="cantidadProductosHelp">Cantidad de piezas o productos terminados en un lote.</div>
 
-    <label for="salarioHora">Costo por hora de mano de obra</label>
-    <input id="salarioHora" type="number" min="0" step="0.01" placeholder="Ej: 8.00" aria-describedby="salarioHoraHelp" />
-    <div class="hint" id="salarioHoraHelp">Lo que te pagas a ti mismo o a un trabajador por hora.</div>
+      <label for="salarioHora">Costo por hora de mano de obra</label>
+      <input id="salarioHora" type="number" min="0" step="0.01" placeholder="Ej: 8.00" aria-describedby="salarioHoraHelp" />
+      <div class="hint" id="salarioHoraHelp">Lo que te pagas a ti mismo o a un trabajador por hora.</div>
 
-    <div class="hint">Fórmula por producto: (min ÷ 60 ÷ unidades) × costo/hora</div>
-    <button class="calc" type="button" onclick="calcularTiempo()">Calcular Tiempo</button>
-    <div class="result" aria-live="polite" id="resultadoTiempo">
-      <span class="result-text"></span>
-      <div class="button-group" style="display:none;">
-        <button class="copy" type="button" onclick="copiarResultado('resultadoTiempo')">Copiar</button>
-        <button class="clear" type="button" onclick="limpiarSeccion('tiempo')">Limpiar</button>
+      <div class="hint">Fórmula por producto: (min ÷ 60 ÷ unidades) × costo/hora</div>
+      <button class="calc" type="button" onclick="calcularTiempo()">Calcular Tiempo</button>
+      <div class="result" aria-live="polite" id="resultadoTiempo">
+        <span class="result-text"></span>
+        <div class="button-group" style="display:none;">
+          <button class="copy" type="button" aria-label="Copiar resultado" onclick="copiarResultado('resultadoTiempo')">Copiar</button>
+          <button class="clear" type="button" aria-label="Limpiar sección" onclick="limpiarSeccion('tiempo')">Limpiar</button>
+        </div>
       </div>
     </div>
   </section>
 
 </main>
+
+<!-- Notificación visual -->
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
 
 <script>
   // Validar campos (min inclusive)
@@ -329,16 +416,28 @@
     }
   }
 
-  // Copiar texto resultado al portapapeles
+  // Mostrar notificación visual
+  function mostrarToast(mensaje) {
+    const toast = document.getElementById('toast');
+    toast.textContent = mensaje;
+    toast.classList.add('show');
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 2000);
+  }
+
+  // Copiar texto resultado al portapapeles (sin alert)
   function copiarResultado(id) {
     const div = document.getElementById(id);
     const texto = div.querySelector('.result-text').textContent;
-    if (!texto) return alert('No hay resultado para copiar.');
-
+    if (!texto) {
+      mostrarToast('No hay resultado para copiar.');
+      return;
+    }
     navigator.clipboard.writeText(texto).then(() => {
-      alert('Resultado copiado al portapapeles.');
+      mostrarToast('Resultado copiado al portapapeles.');
     }).catch(() => {
-      alert('No se pudo copiar el texto.');
+      mostrarToast('No se pudo copiar el texto.');
     });
   }
 
@@ -399,6 +498,21 @@
     const salario = parseFloat(document.getElementById("salarioHora").value);
     const total = (min / 60 / unidades) * salario;
     mostrarResultado("resultadoTiempo", `Costo por unidad: $${total.toFixed(2)}`);
+  }
+
+  // Colapsar/desplegar secciones
+  function toggleCollapse(id) {
+    const content = document.getElementById(id);
+    const btn = content.previousElementSibling;
+    if (content.classList.contains('show')) {
+      content.classList.remove('show');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.textContent = '► ' + btn.textContent.replace('▼ ', '').replace('► ', '');
+    } else {
+      content.classList.add('show');
+      btn.setAttribute('aria-expanded', 'true');
+      btn.textContent = '▼ ' + btn.textContent.replace('▼ ', '').replace('► ', '');
+    }
   }
 </script>
 

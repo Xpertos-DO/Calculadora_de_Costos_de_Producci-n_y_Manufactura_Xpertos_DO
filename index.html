@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Calculadora de costos de producción: electricidad, gas y mano de obra por lote o producto." />
+<title>Calculadora de Costos de Producción</title>
+<style>
+  /* Tema basado en azul del logo */
+  body {
+    font-family: Arial, sans-serif;
+    background: #e6f0ff; /* fondo suave azul */
+    margin: 0; padding: 0;
+    color: #003366; /* azul oscuro para texto */
+  }
+  header {
+    text-align: center;
+    padding: 2rem 1rem;
+    background: #003366; /* azul oscuro */
+    color: #ffffff;
+  }
+  header img {
+    max-width: 180px;
+    height: auto;
+    margin: 0 auto 1rem;
+  }
+  .container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+  .card {
+    background: #ffffff;
+    padding: 1.5rem 2rem;
+    margin-bottom: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgb(0 51 102 / 0.15);
+    transition: box-shadow 0.3s ease;
+  }
+  .card:hover {
+    box-shadow: 0 6px 20px rgb(0 51 102 / 0.25);
+  }
+  h3 {
+    color: #0059b3;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    border-bottom: 2px solid #0059b3;
+    padding-bottom: 0.3rem;
+  }
+  label {
+    display: block;
+    font-weight: 700;
+    margin-top: 1rem;
+  }
+  input, select, button {
+    width: 100%;
+    padding: 0.55rem 0.8rem;
+    margin-top: 0.3rem;
+    border-radius: 6px;
+    border: 1.5px solid #99bbff;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+  }
+  input:focus, select:focus {
+    border-color: #0059b3;
+    outline: none;
+    box-shadow: 0 0 6px #99bbff;
+  }
+  button.calc {
+    background: #0059b3;
+    color: #ffffff;
+    border: none;
+    cursor: pointer;
+    margin-top: 1rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+  }
+  button.calc:hover, button.calc:focus {
+    background: #003366;
+  }
+  button.clear {
+    background: #e60000;
+    margin-top: 0.5rem;
+    font-weight: 700;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    width: auto;
+    padding: 0.45rem 1rem;
+    transition: background-color 0.3s ease;
+  }
+  button.clear:hover, button.clear:focus {
+    background: #990000;
+  }
+  button.copy {
+    background: #007acc;
+    margin-top: 0.5rem;
+    font-weight: 700;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    width: auto;
+    padding: 0.45rem 1rem;
+    transition: background-color 0.3s ease;
+    margin-left: 10px;
+  }
+  button.copy:hover, button.copy:focus {
+    background: #005f99;
+  }
+  .hint {
+    font-size: 0.85rem;
+    color: #0059b3;
+    margin-top: 0.25rem;
+  }
+  .result {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: #cce0ff;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: #003366;
+    min-height: 2.3em;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .error {
+    color: #cc0000;
+    font-weight: 700;
+    margin-top: 0.5rem;
+  }
+  .result-text {
+    flex-grow: 1;
+  }
+  .button-group {
+    display: flex;
+    align-items: center;
+  }
+  @media (max-width: 480px) {
+    .button-group {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    button.copy {
+      margin-left: 0;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <img src="xpertos_blanco.png" alt="Logo de Xpertos" />
+  <h1>Calculadora de Costos de Producción</h1>
+  <p>Estima el costo eléctrico, de gas y de mano de obra por lote o producto</p>
+</header>
+
+<main class="container" role="main">
+
+  <!-- ELECTRICIDAD -->
+  <section class="card" id="card-electricidad" aria-labelledby="electricidad-title">
+    <h3 id="electricidad-title">Electricidad</h3>
+
+    <label for="potencia">Consumo del equipo (W)</label>
+    <input id="potencia" type="number" min="0" step="1" placeholder="Ej: 300" aria-describedby="potenciaHelp" />
+    <div class="hint" id="potenciaHelp">Potencia que consume el equipo, en Watts (ver etiqueta o manual).</div>
+
+    <label for="tiempoUsoElect">Duración de un lote (h)</label>
+    <input id="tiempoUsoElect" type="number" min="0" step="0.01" placeholder="Ej: 0.5" aria-describedby="tiempoUsoElectHelp" />
+    <div class="hint" id="tiempoUsoElectHelp">Tiempo que el equipo está encendido para producir un lote, en horas.</div>
+
+    <label for="frecuencia">Lotes al mes</label>
+    <input id="frecuencia" type="number" min="0" step="1" placeholder="Ej: 10" aria-describedby="frecuenciaHelp" />
+    <div class="hint" id="frecuenciaHelp">Cantidad de lotes que produces en un mes.</div>
+
+    <label for="precioKwh">Costo por kWh de electricidad</label>
+    <input id="precioKwh" type="number" min="0" step="0.0001" placeholder="Ej: 0.20" aria-describedby="precioKwhHelp" />
+    <div class="hint" id="precioKwhHelp">Precio por kWh según tu factura de electricidad.</div>
+
+    <div class="hint">Fórmula: (W × horas × lotes) ÷ 1000 × costo kWh</div>
+    <button class="calc" type="button" onclick="calcularElectricidad()">Calcular Electricidad</button>
+    <div class="result" aria-live="polite" id="resultadoElect">
+      <span class="result-text"></span>
+      <div class="button-group" style="display:none;">
+        <button class="copy" type="button" onclick="copiarResultado('resultadoElect')">Copiar</button>
+        <button class="clear" type="button" onclick="limpiarSeccion('electricidad')">Limpiar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- GAS -->
+  <section class="card" id="card-gas1" aria-labelledby="gas-title">
+    <h3 id="gas-title">Gas</h3>
+
+    <label for="btuCilindro1">Capacidad total de gas del cilindro (BTU)</label>
+    <input id="btuCilindro1" type="number" min="0" step="1" value="91500" aria-describedby="btuCilindroHelp" />
+    <div class="hint" id="btuCilindroHelp">Valor típico para cilindro de 25 lb: 91,500 BTU.</div>
+
+    <label for="btuQuemador1">Potencia del quemador (BTU/h)</label>
+    <select id="btuQuemador1" aria-describedby="btuQuemadorHelp">
+      <option value="">-- Selecciona quemador --</option>
+      <option value="5000">Pequeño: 5,000–8,000 BTU/h</option>
+      <option value="9000">Mediano: 9,000–12,000 BTU/h</option>
+      <option value="15000">Grande: 15,000–18,000 BTU/h</option>
+    </select>
+    <div class="hint" id="btuQuemadorHelp">Revisa las especificaciones del quemador o manual.</div>
+
+    <label for="tiempoUsoGas1">Duración de uso del quemador por lote (h)</label>
+    <input id="tiempoUsoGas1" type="number" min="0" step="0.01" placeholder="Ej: 1" aria-describedby="tiempoUsoGasHelp" />
+    <div class="hint" id="tiempoUsoGasHelp">Tiempo que el quemador está encendido para un lote.</div>
+
+    <label for="precioCilindro1">Costo de llenado del cilindro</label>
+    <input id="precioCilindro1" type="number" min="0" step="0.01" placeholder="Ej: 25.00" aria-describedby="precioCilindroHelp" />
+    <div class="hint" id="precioCilindroHelp">Precio que pagas por rellenar o cambiar el cilindro.</div>
+
+    <div class="hint">Fórmula: (BTU/h × horas) ÷ BTU cilindro × costo cilindro</div>
+    <button class="calc" type="button" onclick="calcularGas(1)">Calcular Gas</button>
+    <div class="result" aria-live="polite" id="resultadoGas1">
+      <span class="result-text"></span>
+      <div class="button-group" style="display:none;">
+        <button class="copy" type="button" onclick="copiarResultado('resultadoGas1')">Copiar</button>
+        <button class="clear" type="button" onclick="limpiarSeccion('gas1')">Limpiar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIEMPO -->
+  <section class="card" id="card-tiempo" aria-labelledby="tiempo-title">
+    <h3 id="tiempo-title">Tiempo de trabajo</h3>
+
+    <label for="tiempoLoteMin">Duración total de producción por lote (min)</label>
+    <input id="tiempoLoteMin" type="number" min="0" step="0.1" placeholder="Ej: 120" aria-describedby="tiempoLoteMinHelp" />
+    <div class="hint" id="tiempoLoteMinHelp">Incluye preparación, cocción y empaquetado.</div>
+
+    <label for="cantidadProductos">Unidades producidas por lote</label>
+    <input id="cantidadProductos" type="number" min="1" step="1" placeholder="Ej: 20" aria-describedby="cantidadProductosHelp" />
+    <div class="hint" id="cantidadProductosHelp">Cantidad de piezas o productos terminados en un lote.</div>
+
+    <label for="salarioHora">Costo por hora de mano de obra</label>
+    <input id="salarioHora" type="number" min="0" step="0.01" placeholder="Ej: 8.00" aria-describedby="salarioHoraHelp" />
+    <div class="hint" id="salarioHoraHelp">Lo que te pagas a ti mismo o a un trabajador por hora.</div>
+
+    <div class="hint">Fórmula por producto: (min ÷ 60 ÷ unidades) × costo/hora</div>
+    <button class="calc" type="button" onclick="calcularTiempo()">Calcular Tiempo</button>
+    <div class="result" aria-live="polite" id="resultadoTiempo">
+      <span class="result-text"></span>
+      <div class="button-group" style="display:none;">
+        <button class="copy" type="button" onclick="copiarResultado('resultadoTiempo')">Copiar</button>
+        <button class="clear" type="button" onclick="limpiarSeccion('tiempo')">Limpiar</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // Validar campos (min inclusive)
+  function validarCampos(campos) {
+    for (const {id, nombre, min} of campos) {
+      const valor = parseFloat(document.getElementById(id).value);
+      if (isNaN(valor) || valor < min) {
+        return `Por favor, ingresa un valor válido para "${nombre}".`;
+      }
+    }
+    return null;
+  }
+
+  // Mostrar resultado, activar botones copiar y limpiar
+  function mostrarResultado(id, mensaje, isError = false) {
+    const div = document.getElementById(id);
+    const texto = div.querySelector('.result-text');
+    const botones = div.querySelector('.button-group');
+
+    texto.textContent = mensaje;
+    div.style.display = "flex";
+    if (isError) {
+      div.classList.add("error");
+      if (botones) botones.style.display = "none";
+    } else {
+      div.classList.remove("error");
+      if (botones) botones.style.display = "flex";
+    }
+  }
+
+  // Limpiar resultados y inputs de una sección
+  function limpiarSeccion(seccion) {
+    let inputs;
+    let resultadoDiv;
+    switch(seccion) {
+      case 'electricidad':
+        inputs = ['potencia','tiempoUsoElect','frecuencia','precioKwh'];
+        resultadoDiv = 'resultadoElect';
+        break;
+      case 'gas1':
+        inputs = ['btuCilindro1','btuQuemador1','tiempoUsoGas1','precioCilindro1'];
+        resultadoDiv = 'resultadoGas1';
+        break;
+      case 'tiempo':
+        inputs = ['tiempoLoteMin','cantidadProductos','salarioHora'];
+        resultadoDiv = 'resultadoTiempo';
+        break;
+      default:
+        return;
+    }
+    inputs.forEach(id => {
+      const el = document.getElementById(id);
+      if(el.tagName.toLowerCase() === 'select'){
+        el.selectedIndex = 0;
+      } else {
+        el.value = '';
+      }
+    });
+    const div = document.getElementById(resultadoDiv);
+    if(div){
+      div.style.display = 'none';
+      const texto = div.querySelector('.result-text');
+      if(texto) texto.textContent = '';
+      const botones = div.querySelector('.button-group');
+      if(botones) botones.style.display = 'none';
+      div.classList.remove('error');
+    }
+  }
+
+  // Copiar texto resultado al portapapeles
+  function copiarResultado(id) {
+    const div = document.getElementById(id);
+    const texto = div.querySelector('.result-text').textContent;
+    if (!texto) return alert('No hay resultado para copiar.');
+
+    navigator.clipboard.writeText(texto).then(() => {
+      alert('Resultado copiado al portapapeles.');
+    }).catch(() => {
+      alert('No se pudo copiar el texto.');
+    });
+  }
+
+  // Cálculos con validación y mostrar resultado
+  function calcularElectricidad() {
+    const campos = [
+      {id: "potencia", nombre: "Consumo del equipo (W)", min: 0.1},
+      {id: "tiempoUsoElect", nombre: "Duración de un lote (h)", min: 0.01},
+      {id: "frecuencia", nombre: "Lotes al mes", min: 1},
+      {id: "precioKwh", nombre: "Costo por kWh de electricidad", min: 0.001},
+    ];
+    const error = validarCampos(campos);
+    if (error) {
+      mostrarResultado("resultadoElect", error, true);
+      return;
+    }
+    const W = parseFloat(document.getElementById("potencia").value);
+    const horas = parseFloat(document.getElementById("tiempoUsoElect").value);
+    const lotes = parseFloat(document.getElementById("frecuencia").value);
+    const precio = parseFloat(document.getElementById("precioKwh").value);
+    const total = (W * horas * lotes / 1000) * precio;
+    mostrarResultado("resultadoElect", `Costo mensual: $${total.toFixed(2)}`);
+  }
+
+  function calcularGas(num) {
+    const campos = [
+      {id: `btuCilindro${num}`, nombre: "Capacidad total de gas del cilindro (BTU)", min: 1},
+      {id: `btuQuemador${num}`, nombre: "Potencia del quemador (BTU/h)", min: 1},
+      {id: `tiempoUsoGas${num}`, nombre: "Duración de uso del quemador por lote (h)", min: 0.01},
+      {id: `precioCilindro${num}`, nombre: "Costo de llenado del cilindro", min: 0.01},
+    ];
+    const error = validarCampos(campos);
+    if (error) {
+      mostrarResultado(`resultadoGas${num}`, error, true);
+      return;
+    }
+    const btuCil = parseFloat(document.getElementById(`btuCilindro${num}`).value);
+    const btuQuem = parseFloat(document.getElementById(`btuQuemador${num}`).value);
+    const horas = parseFloat(document.getElementById(`tiempoUsoGas${num}`).value);
+    const precioCil = parseFloat(document.getElementById(`precioCilindro${num}`).value);
+    const total = ((btuQuem * horas) / btuCil) * precioCil;
+    mostrarResultado(`resultadoGas${num}`, `Costo por lote: $${total.toFixed(2)}`);
+  }
+
+  function calcularTiempo() {
+    const campos = [
+      {id: "tiempoLoteMin", nombre: "Duración total de producción por lote (min)", min: 0.1},
+      {id: "cantidadProductos", nombre: "Unidades producidas por lote", min: 1},
+      {id: "salarioHora", nombre: "Costo por hora de mano de obra", min: 0.01},
+    ];
+    const error = validarCampos(campos);
+    if (error) {
+      mostrarResultado("resultadoTiempo", error, true);
+      return;
+    }
+    const min = parseFloat(document.getElementById("tiempoLoteMin").value);
+    const unidades = parseFloat(document.getElementById("cantidadProductos").value);
+    const salario = parseFloat(document.getElementById("salarioHora").value);
+    const total = (min / 60 / unidades) * salario;
+    mostrarResultado("resultadoTiempo", `Costo por unidad: $${total.toFixed(2)}`);
+  }
+</script>
+
+</body>
+</html>

@@ -16,15 +16,9 @@ Permite estimar de forma rápida el gasto en **electricidad, gas y mano de obra*
 
 ## 🌐 Versión en línea
 👉 Accede desde GitHub Pages:  
-**[Calculadora de Costos - Xpertos](https://TU-USUARIO.github.io/calculadora-costos-xpertos/)**  
+**[Calculadora de Costos - Xpertos](https://xpertos-do.github.io/Calculadora_de_Costos_de_Producci-n_y_Manufactura_Xpertos_DO/)**  
 
 *(Reemplaza `TU-USUARIO` con tu nombre de usuario de GitHub)*  
-
----
-
-## 📸 Vista previa
-![Captura de la calculadora](preview.png)  
-*(Agrega un screenshot del proyecto con el nombre `preview.png` en tu repo para que se muestre aquí)*  
 
 ---
 

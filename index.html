@@ -15,8 +15,6 @@
     --brand-2: #22c55e;
     --stroke: rgba(255,255,255,.08);
     --radius: 16px;
-
-    
   }
   body {
     font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
@@ -29,29 +27,29 @@
   }
   header {
     text-align: center;
-    padding: 2rem 1rem 1rem;
+    padding: 0.7rem 1rem 0.2rem;
     background: transparent;
     color: var(--text);
   }
   header img {
-    max-width: 120px;
+    max-width: 250px;
     height: auto;
-    margin: 0 auto 1rem;
+    margin: 0 auto 0.25rem;
     border-radius: 12px;
     box-shadow: 0 2px 12px rgba(124,58,237,.12);
   }
   .container {
     max-width: 700px;
-    margin: 2rem auto;
+    margin: 1rem auto;
     padding: 0 1rem;
   }
   .card {
     background: var(--card);
-    border: 1px solid var(--stroke);
+    border: 1.5px solid var(--stroke);
     border-radius: var(--radius);
     box-shadow: 0 4px 16px rgba(124,58,237,.08);
     padding: 1.5rem 2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     transition: box-shadow 0.3s;
   }
   .card:hover {
@@ -60,11 +58,14 @@
   h1, h3 {
     color: var(--brand);
     font-weight: 700;
-    margin-bottom: 1rem;
+    margin-bottom: 0.1rem;
+  }
+  header p {
+    margin-bottom: 0rem; /* Sin espacio extra debajo de la descripción */
   }
   h3 {
     border-bottom: 2px solid var(--brand);
-    padding-bottom: 0.3rem;
+    padding-bottom: 0.1rem;
     font-size: 1.2rem;
   }
   label {
@@ -184,6 +185,36 @@
       padding: 1rem 0.5rem;
     }
   }
+  @media (max-width: 600px) {
+  #tablaMateriales, #tablaMateriales thead, #tablaMateriales tbody, #tablaMateriales tr, #tablaMateriales th, #tablaMateriales td {
+    display: block;
+    width: 100%;
+  }
+  #tablaMateriales thead {
+    display: none;
+  }
+  #tablaMateriales tr {
+    margin-bottom: 1.2em;
+    background: #181a20;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(124,58,237,.08);
+    padding: 0.7em 0.5em;
+    border: 1px solid var(--stroke);
+  }
+  #tablaMateriales td {
+    padding: 0.3em 0.2em;
+    border: none;
+    position: relative;
+  }
+  #tablaMateriales td:before {
+    content: attr(data-label);
+    font-weight: 700;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 0.2em;
+    font-size: 0.9em;
+  }
+}
   .toast {
     position: fixed;
     bottom: 30px;
@@ -237,7 +268,7 @@
 <header>
   <img src="xpertos_blanco.png" alt="Logo de Xpertos" />
   <h1>Calculadora de Costos de Producción</h1>
-  <p>Estima el costo eléctrico, de gas y de mano de obra por lote o producto</p>
+  <p>Conversión de unidades, costo eléctrico, GLP y mano de obra por lote de producto</p>
 </header>
 
 <main class="container" role="main">
@@ -245,12 +276,15 @@
 
 <!-- MATERIALES (Masa) -->
 <section class="card" id="card-materiales" aria-labelledby="materiales-title">
-  <button class="collapse-btn" type="button" onclick="toggleCollapse('collapse-materiales')" aria-expanded="true" aria-controls="collapse-materiales">▼ Materiales</button>
+  <h3 id="materiales-title" class="collapse-btn" tabindex="0" role="button" aria-expanded="true" aria-controls="collapse-materiales"
+      onclick="toggleCollapse('collapse-materiales')" onkeydown="if(event.key==='Enter'||event.key===' ')toggleCollapse('collapse-materiales')">
+     Materiales 
+  </h3>
   <div id="collapse-materiales" class="collapse-content show">
-    <h3 id="materiales-title">Materiales (Masa)</h3>
 
-    <div style="overflow-x:auto;">
-      <table id="tablaMateriales" style="width:100%;border-collapse:collapse;">
+    <div id="contenedorMateriales">
+  <table id="tablaMateriales" style="width:100%;border-collapse:collapse;">
+  
         <thead>
           <tr style="color:var(--muted);text-align:left;">
             <th>Producto</th>
@@ -278,25 +312,24 @@
 
   <!-- ELECTRICIDAD -->
   <section class="card" id="card-electricidad" aria-labelledby="electricidad-title">
-    <button class="collapse-btn" type="button" onclick="toggleCollapse('collapse-electricidad')" aria-expanded="true" aria-controls="collapse-electricidad">▼ Electricidad</button>
+    <h3 id="electricidad-title" class="collapse-btn" tabindex="0" role="button" aria-expanded="true" aria-controls="collapse-electricidad"
+        onclick="toggleCollapse('collapse-electricidad')" onkeydown="if(event.key==='Enter'||event.key===' ')toggleCollapse('collapse-electricidad')">
+       Electricidad
+    </h3>
     <div id="collapse-electricidad" class="collapse-content show">
-      <h3 id="electricidad-title">Electricidad</h3>
+    
 
       <label for="potencia">Consumo del equipo (W)</label>
-      <input id="potencia" type="number" min="0" step="1" placeholder="Ej: 300" aria-describedby="potenciaHelp" />
-      <div class="hint" id="potenciaHelp">Potencia que consume el equipo, en Watts (ver etiqueta o manual).</div>
+      <input id="potencia" type="number" min="0" step="1" placeholder="Ej: Potencia que consume el equipo, en Watts 300 (ver etiqueta o manual)" aria-describedby="potenciaHelp" />
 
       <label for="tiempoUsoElect">Duración de un lote (h)</label>
-      <input id="tiempoUsoElect" type="number" min="0" step="0.01" placeholder="Ej: 0.5" aria-describedby="tiempoUsoElectHelp" />
-      <div class="hint" id="tiempoUsoElectHelp">Tiempo que el equipo está encendido para producir un lote, en horas.</div>
+      <input id="tiempoUsoElect" type="number" min="0" step="0.01" placeholder="Tiempo que el equipo está encendido para producir un lote, en horas." aria-describedby="tiempoUsoElectHelp" />
 
       <label for="frecuencia">Lotes al mes</label>
-      <input id="frecuencia" type="number" min="0" step="1" placeholder="Ej: 10" aria-describedby="frecuenciaHelp" />
-      <div class="hint" id="frecuenciaHelp">Cantidad de lotes que produces en un mes.</div>
+      <input id="frecuencia" type="number" min="0" step="1" placeholder="Cantidad de lotes que produces en un mes." aria-describedby="frecuenciaHelp" />
 
       <label for="precioKwh">Costo por kWh de electricidad</label>
-      <input id="precioKwh" type="number" min="0" step="0.0001" placeholder="Ej: 0.20" aria-describedby="precioKwhHelp" />
-      <div class="hint" id="precioKwhHelp">Precio por kWh según tu factura de electricidad.</div>
+      <input id="precioKwh" type="number" min="0" step="0.0001" placeholder="Precio por kWh según tu factura de electricidad." aria-describedby="precioKwhHelp" />
 
       <div class="hint">Fórmula: (W × horas × lotes) ÷ 1000 × costo kWh</div>
       <button class="calc" type="button" onclick="calcularElectricidad()">Calcular Electricidad</button>
@@ -312,13 +345,14 @@
 
   <!-- GAS -->
   <section class="card" id="card-gas1" aria-labelledby="gas-title">
-    <button class="collapse-btn" type="button" onclick="toggleCollapse('collapse-gas1')" aria-expanded="true" aria-controls="collapse-gas1">▼ Gas</button>
+    <h3 id="gas-title" class="collapse-btn" tabindex="0" role="button" aria-expanded="true" aria-controls="collapse-gas1"
+        onclick="toggleCollapse('collapse-gas1')" onkeydown="if(event.key==='Enter'||event.key===' ')toggleCollapse('collapse-gas1')">
+       Gas (GLP)
+    </h3>
     <div id="collapse-gas1" class="collapse-content show">
-      <h3 id="gas-title">Gas</h3>
 
       <label for="btuCilindro1">Capacidad total de gas del cilindro (BTU)</label>
-      <input id="btuCilindro1" type="number" min="0" step="1" value="91500" aria-describedby="btuCilindroHelp" />
-      <div class="hint" id="btuCilindroHelp">Valor típico para cilindro de 25 lb: 91,500 BTU.</div>
+      <input id="btuCilindro1" type="number" min="0" step="1" value="91500" placeholder="Valor típico para cilindro de 25 lb: 91,500 BTU." aria-describedby="btuCilindroHelp" />
 
       <label for="btuQuemador1">Potencia del quemador (BTU/h)</label>
       <select id="btuQuemador1" aria-describedby="btuQuemadorHelp">
@@ -327,15 +361,13 @@
         <option value="9000">Mediano: 9,000–12,000 BTU/h</option>
         <option value="15000">Grande: 15,000–18,000 BTU/h</option>
       </select>
-      <div class="hint" id="btuQuemadorHelp">Revisa las especificaciones del quemador o manual.</div>
+      <!-- <div class="hint" id="btuQuemadorHelp">Revisa las especificaciones del quemador o manual.</div> -->
 
       <label for="tiempoUsoGas1">Duración de uso del quemador por lote (h)</label>
-      <input id="tiempoUsoGas1" type="number" min="0" step="0.01" placeholder="Ej: 1" aria-describedby="tiempoUsoGasHelp" />
-      <div class="hint" id="tiempoUsoGasHelp">Tiempo que el quemador está encendido para un lote.</div>
+      <input id="tiempoUsoGas1" type="number" min="0" step="0.01" placeholder="Tiempo que el quemador está encendido para un lote." aria-describedby="tiempoUsoGasHelp" />
 
       <label for="precioCilindro1">Costo de llenado del cilindro</label>
-      <input id="precioCilindro1" type="number" min="0" step="0.01" placeholder="Ej: 25.00" aria-describedby="precioCilindroHelp" />
-      <div class="hint" id="precioCilindroHelp">Precio que pagas por rellenar o cambiar el cilindro.</div>
+      <input id="precioCilindro1" type="number" min="0" step="0.01" placeholder="Precio que pagas por rellenar o cambiar el cilindro." aria-describedby="precioCilindroHelp" />
 
       <div class="hint">Fórmula: (BTU/h × horas) ÷ BTU cilindro × costo cilindro</div>
       <button class="calc" type="button" onclick="calcularGas(1)">Calcular Gas</button>
@@ -351,21 +383,20 @@
 
   <!-- TIEMPO -->
   <section class="card" id="card-tiempo" aria-labelledby="tiempo-title">
-    <button class="collapse-btn" type="button" onclick="toggleCollapse('collapse-tiempo')" aria-expanded="true" aria-controls="collapse-tiempo">▼ Tiempo de trabajo</button>
+    <h3 id="tiempo-title" class="collapse-btn" tabindex="0" role="button" aria-expanded="true" aria-controls="collapse-tiempo"
+        onclick="toggleCollapse('collapse-tiempo')" onkeydown="if(event.key==='Enter'||event.key===' ')toggleCollapse('collapse-tiempo')">
+       Tiempo de trabajo
+    </h3>
     <div id="collapse-tiempo" class="collapse-content show">
-      <h3 id="tiempo-title">Tiempo de trabajo</h3>
 
       <label for="tiempoLoteMin">Duración total de producción por lote (min)</label>
-      <input id="tiempoLoteMin" type="number" min="0" step="0.1" placeholder="Ej: 120" aria-describedby="tiempoLoteMinHelp" />
-      <div class="hint" id="tiempoLoteMinHelp">Incluye preparación, cocción y empaquetado.</div>
+      <input id="tiempoLoteMin" type="number" min="0" step="0.1" placeholder="Incluye preparación, cocción y empaquetado." aria-describedby="tiempoLoteMinHelp" />
 
       <label for="cantidadProductos">Unidades producidas por lote</label>
-      <input id="cantidadProductos" type="number" min="1" step="1" placeholder="Ej: 20" aria-describedby="cantidadProductosHelp" />
-      <div class="hint" id="cantidadProductosHelp">Cantidad de piezas o productos terminados en un lote.</div>
+      <input id="cantidadProductos" type="number" min="1" step="1" placeholder="Cantidad de piezas o productos terminados en un lote." aria-describedby="cantidadProductosHelp" />
 
       <label for="salarioHora">Costo por hora de mano de obra</label>
-      <input id="salarioHora" type="number" min="0" step="0.01" placeholder="Ej: 8.00" aria-describedby="salarioHoraHelp" />
-      <div class="hint" id="salarioHoraHelp">Lo que te pagas a ti mismo o a un trabajador por hora.</div>
+      <input id="salarioHora" type="number" min="0" step="0.01" placeholder="Lo que te pagas a ti mismo o a un trabajador por hora." aria-describedby="salarioHoraHelp" />
 
       <div class="hint">Fórmula por producto: (min ÷ 60 ÷ unidades) × costo/hora</div>
       <button class="calc" type="button" onclick="calcularTiempo()">Calcular Tiempo</button>
@@ -381,9 +412,11 @@
 
   <!-- Tabla subtotales-->
   <section class="card" id="card-resumen" aria-labelledby="resumen-title">
-    <button class="collapse-btn" type="button" onclick="toggleCollapse('collapse-resumen')" aria-expanded="true" aria-controls="collapse-resumen">▼ Resumen de Subtotales</button>
+    <h3 id="resumen-title" class="collapse-btn" tabindex="0" role="button" aria-expanded="true" aria-controls="collapse-resumen"
+        onclick="toggleCollapse('collapse-resumen')" onkeydown="if(event.key==='Enter'||event.key===' ')toggleCollapse('collapse-resumen')">
+       Resumen de Subtotales
+    </h3>
     <div id="collapse-resumen" class="collapse-content show">
-      <h3 id="resumen-title">Resumen de Subtotales</h3>
   
       <table id="tablaResumen" style="width:100%;border-collapse:collapse;">
         <thead>
@@ -603,39 +636,9 @@ function agregarMaterial() {
 
   const fila = document.createElement("tr");
   fila.innerHTML = `
-    <td><input type="text" placeholder="Ej: Harina"></td>
-    <td><input type="number" min="0" step="0.01" placeholder="Ej: 100"></td>
-<td>
-  <select>
-    <option value="">--</option>
-    <!-- MASA -->
-    <option value="kg">kg</option>
-    <option value="g">g</option>
-    <option value="lb">lb</option>
-    <option value="oz">oz</option>
-    <!-- VOLUMEN -->
-    <option value="L">L</option>
-    <option value="ml">ml</option>
-    <option value="gal">gal (US)</option>
-    <option value="floz">oz líquida (US)</option>
-    <!-- LONGITUD -->
-    <option value="m">m</option>
-    <option value="cm">cm</option>
-    <option value="mm">mm</option>
-    <option value="in">pulgada</option>
-    <option value="ft">pie</option>
-    <!-- AREA -->
-    <option value="m2">m²</option>
-    <option value="cm2">cm²</option>
-    <option value="in2">in²</option>
-    <option value="ft2">ft²</option>
-    <!-- UNIDAD -->
-    <option value="u">unidad</option>
-  </select>
-</td>
-
-    <td><input type="number" min="0" step="0.01" placeholder="Ej: 10.00"></td>
-    <td>
+    <td data-label="Producto"><input type="text" placeholder="Ej: Harina"></td>
+    <td data-label="Cantidad compra"><input type="number" min="0" step="0.01" placeholder="Ej: 100"></td>
+    <td data-label="Unidad compra">
       <select>
         <option value="">--</option>
         <!-- MASA -->
@@ -663,21 +666,51 @@ function agregarMaterial() {
         <option value="u">unidad</option>
       </select>
     </td>
-
-    <td class="equivalente">-</td>
-    <td class="costo">-</td>
-    <td><button class="clear" onclick="eliminarFila(this)">X</button></td>
+    <td data-label="Precio total"><input type="number" min="0" step="0.01" placeholder="Ej: 10.00"></td>
+    <td data-label="Unidad transformación">
+      <select>
+        <option value="">--</option>
+        <!-- MASA -->
+        <option value="kg">kg</option>
+        <option value="g">g</option>
+        <option value="lb">lb</option>
+        <option value="oz">oz</option>
+        <!-- VOLUMEN -->
+        <option value="L">L</option>
+        <option value="ml">ml</option>
+        <option value="gal">gal (US)</option>
+        <option value="floz">oz líquida (US)</option>
+        <!-- LONGITUD -->
+        <option value="m">m</option>
+        <option value="cm">cm</option>
+        <option value="mm">mm</option>
+        <option value="in">pulgada</option>
+        <option value="ft">pie</option>
+        <!-- AREA -->
+        <option value="m2">m²</option>
+        <option value="cm2">cm²</option>
+        <option value="in2">in²</option>
+        <option value="ft2">ft²</option>
+        <!-- UNIDAD -->
+        <option value="u">unidad</option>
+      </select>
+    </td>
+    <td data-label="Cantidad equivalente" class="equivalente">-</td>
+    <td data-label="Costo por unidad" class="costo">-</td>
+    <td data-label=""><button class="clear" onclick="eliminarFila(this)">X</button></td>
   `;
   tbody.appendChild(fila);
 
   fila.querySelectorAll("input,select").forEach(el => {
     el.addEventListener("input", calcularMateriales);
   });
+  actualizarResumen(); // <-- Agrega esta línea
 }
 
 function eliminarFila(btn) {
   btn.closest("tr").remove();
   calcularMateriales();
+  actualizarResumen(); // <-- Agrega esta línea
 }
 
 // ==== Materiales (con multi-categoría) ====
@@ -726,6 +759,7 @@ function calcularMateriales() {
     document.querySelector("#resultadoMateriales .result-text").textContent =
       "Sin materiales calculados";
   }
+   actualizarResumen();
 }
 
 function actualizarResumen() {
@@ -769,7 +803,19 @@ function actualizarResumen() {
     const total = subtotalElect + subtotalGas + subtotalTiempo; // Materiales no se suma al total
     document.getElementById("totalFinal").textContent = `$${total.toFixed(2)}`;
   }
+  function toggleCollapse(id) {
+    const content = document.getElementById(id);
+    const btn = document.querySelector(`[aria-controls="${id}"]`);
+    if (content.classList.contains('show')) {
+      content.classList.remove('show');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.textContent = '► ' + btn.textContent.replace(/^▼ |^► /, '');
+    } else {
+      content.classList.add('show');
+      btn.setAttribute('aria-expanded', 'true');
+      btn.textContent = '▼ ' + btn.textContent.replace(/^▼ |^► /, '');
+    }
+  }
 </script>
-
 </body>
 </html>

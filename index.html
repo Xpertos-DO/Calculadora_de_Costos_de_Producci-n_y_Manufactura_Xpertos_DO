@@ -15,6 +15,8 @@
     --brand-2: #22c55e;
     --stroke: rgba(255,255,255,.08);
     --radius: 16px;
+
+    
   }
   body {
     font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
@@ -240,6 +242,40 @@
 
 <main class="container" role="main">
 
+
+<!-- MATERIALES (Masa) -->
+<section class="card" id="card-materiales" aria-labelledby="materiales-title">
+  <button class="collapse-btn" type="button" onclick="toggleCollapse('collapse-materiales')" aria-expanded="true" aria-controls="collapse-materiales">▼ Materiales</button>
+  <div id="collapse-materiales" class="collapse-content show">
+    <h3 id="materiales-title">Materiales (Masa)</h3>
+
+    <div style="overflow-x:auto;">
+      <table id="tablaMateriales" style="width:100%;border-collapse:collapse;">
+        <thead>
+          <tr style="color:var(--muted);text-align:left;">
+            <th>Producto</th>
+            <th>Cantidad compra</th>
+            <th>Unidad compra</th>
+            <th>Precio total</th>
+            <th>Unidad transformación</th>
+            <th>Cantidad equivalente</th>
+            <th>Costo por unidad</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <button class="calc" type="button" onclick="agregarMaterial()">+ Agregar material</button>
+    <div class="result" aria-live="polite" id="resultadoMateriales">
+      <span class="result-text">Subtotal materiales: $0.00</span>
+    </div>
+  </div>
+</section>
+
+  
+
   <!-- ELECTRICIDAD -->
   <section class="card" id="card-electricidad" aria-labelledby="electricidad-title">
     <button class="collapse-btn" type="button" onclick="toggleCollapse('collapse-electricidad')" aria-expanded="true" aria-controls="collapse-electricidad">▼ Electricidad</button>
@@ -340,6 +376,49 @@
           <button class="clear" type="button" aria-label="Limpiar sección" onclick="limpiarSeccion('tiempo')">Limpiar</button>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- Tabla subtotales-->
+  <section class="card" id="card-resumen" aria-labelledby="resumen-title">
+    <button class="collapse-btn" type="button" onclick="toggleCollapse('collapse-resumen')" aria-expanded="true" aria-controls="collapse-resumen">▼ Resumen de Subtotales</button>
+    <div id="collapse-resumen" class="collapse-content show">
+      <h3 id="resumen-title">Resumen de Subtotales</h3>
+  
+      <table id="tablaResumen" style="width:100%;border-collapse:collapse;">
+        <thead>
+          <tr style="color:var(--muted);text-align:left;">
+            <th>Concepto</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Materiales</td>
+            <td id="subtotalMateriales">
+              <div id="listaMateriales">Sin materiales calculados</div>
+            </td>
+          </tr>
+          <tr>
+            <td>Electricidad</td>
+            <td id="subtotalElect">$0.00</td>
+          </tr>
+          <tr>
+            <td>Gas</td>
+            <td id="subtotalGas">$0.00</td>
+          </tr>
+          <tr>
+            <td>Mano de obra</td>
+            <td id="subtotalTiempo">$0.00</td>
+          </tr>
+          <tr style="font-weight:700; border-top:1px solid var(--stroke);">
+            <td>Total</td>
+            <td id="totalFinal">$0.00</td>
+          </tr>
+        </tbody>
+      </table>
+  
+      <button class="calc" type="button" onclick="actualizarResumen()">Actualizar Resumen</button>
     </div>
   </section>
 
@@ -500,19 +579,195 @@
     mostrarResultado("resultadoTiempo", `Costo por unidad: $${total.toFixed(2)}`);
   }
 
-  // Colapsar/desplegar secciones
-  function toggleCollapse(id) {
-    const content = document.getElementById(id);
-    const btn = content.previousElementSibling;
-    if (content.classList.contains('show')) {
-      content.classList.remove('show');
-      btn.setAttribute('aria-expanded', 'false');
-      btn.textContent = '► ' + btn.textContent.replace('▼ ', '').replace('► ', '');
+// ==== FACTORES DE CONVERSIÓN ====
+// Todas convertidas a una "unidad base" de su categoría
+const factores = {
+  masa: { base: "g", unidades: { g:1, kg:1000, lb:453.592, oz:28.3495 } },
+  volumen: { base: "ml", unidades: { ml:1, L:1000, gal:3785.41, floz:29.5735 } },
+  longitud: { base: "m", unidades: { m:1, cm:0.01, mm:0.001, in:0.0254, ft:0.3048 } },
+  area: { base: "m2", unidades: { m2:1, cm2:0.0001, in2:0.00064516, ft2:0.092903 } },
+  unidad: { base: "u", unidades: { u:1 } }
+};
+
+// Buscar categoría de una unidad
+function categoriaDeUnidad(u) {
+  for (const cat in factores) {
+    if (u in factores[cat].unidades) return cat;
+  }
+  return null;
+}
+
+// ==== Materiales ====
+function agregarMaterial() {
+  const tbody = document.querySelector("#tablaMateriales tbody");
+
+  const fila = document.createElement("tr");
+  fila.innerHTML = `
+    <td><input type="text" placeholder="Ej: Harina"></td>
+    <td><input type="number" min="0" step="0.01" placeholder="Ej: 100"></td>
+<td>
+  <select>
+    <option value="">--</option>
+    <!-- MASA -->
+    <option value="kg">kg</option>
+    <option value="g">g</option>
+    <option value="lb">lb</option>
+    <option value="oz">oz</option>
+    <!-- VOLUMEN -->
+    <option value="L">L</option>
+    <option value="ml">ml</option>
+    <option value="gal">gal (US)</option>
+    <option value="floz">oz líquida (US)</option>
+    <!-- LONGITUD -->
+    <option value="m">m</option>
+    <option value="cm">cm</option>
+    <option value="mm">mm</option>
+    <option value="in">pulgada</option>
+    <option value="ft">pie</option>
+    <!-- AREA -->
+    <option value="m2">m²</option>
+    <option value="cm2">cm²</option>
+    <option value="in2">in²</option>
+    <option value="ft2">ft²</option>
+    <!-- UNIDAD -->
+    <option value="u">unidad</option>
+  </select>
+</td>
+
+    <td><input type="number" min="0" step="0.01" placeholder="Ej: 10.00"></td>
+    <td>
+      <select>
+        <option value="">--</option>
+        <!-- MASA -->
+        <option value="kg">kg</option>
+        <option value="g">g</option>
+        <option value="lb">lb</option>
+        <option value="oz">oz</option>
+        <!-- VOLUMEN -->
+        <option value="L">L</option>
+        <option value="ml">ml</option>
+        <option value="gal">gal (US)</option>
+        <option value="floz">oz líquida (US)</option>
+        <!-- LONGITUD -->
+        <option value="m">m</option>
+        <option value="cm">cm</option>
+        <option value="mm">mm</option>
+        <option value="in">pulgada</option>
+        <option value="ft">pie</option>
+        <!-- AREA -->
+        <option value="m2">m²</option>
+        <option value="cm2">cm²</option>
+        <option value="in2">in²</option>
+        <option value="ft2">ft²</option>
+        <!-- UNIDAD -->
+        <option value="u">unidad</option>
+      </select>
+    </td>
+
+    <td class="equivalente">-</td>
+    <td class="costo">-</td>
+    <td><button class="clear" onclick="eliminarFila(this)">X</button></td>
+  `;
+  tbody.appendChild(fila);
+
+  fila.querySelectorAll("input,select").forEach(el => {
+    el.addEventListener("input", calcularMateriales);
+  });
+}
+
+function eliminarFila(btn) {
+  btn.closest("tr").remove();
+  calcularMateriales();
+}
+
+// ==== Materiales (con multi-categoría) ====
+function calcularMateriales() {
+  const filas = document.querySelectorAll("#tablaMateriales tbody tr");
+  let resultados = [];
+
+  filas.forEach(fila => {
+    const producto = fila.cells[0].querySelector("input").value || "(sin nombre)";
+    const cantidad = parseFloat(fila.cells[1].querySelector("input").value) || 0;
+    const unidadCompra = fila.cells[2].querySelector("select").value;
+    const precioTotal = parseFloat(fila.cells[3].querySelector("input").value) || 0;
+    const unidadTransf = fila.cells[4].querySelector("select").value;
+
+    if (cantidad > 0 && precioTotal > 0 && unidadCompra && unidadTransf) {
+      const catCompra = categoriaDeUnidad(unidadCompra);
+      const catTransf = categoriaDeUnidad(unidadTransf);
+
+      if (catCompra && catCompra === catTransf) {
+        // convertir a unidad base
+        const baseCompra = cantidad * factores[catCompra].unidades[unidadCompra];
+        // convertir a unidad destino
+        const cantidadTransformada = baseCompra / factores[catTransf].unidades[unidadTransf];
+
+        const costoPorUnidad = precioTotal / cantidadTransformada;
+
+        fila.querySelector(".equivalente").textContent = `${cantidadTransformada.toFixed(2)} ${unidadTransf}`;
+        fila.querySelector(".costo").textContent = `$${costoPorUnidad.toFixed(4)} / ${unidadTransf}`;
+
+        resultados.push(`${producto}: $${costoPorUnidad.toFixed(4)} / ${unidadTransf}`);
+      } else {
+        fila.querySelector(".equivalente").textContent = "⚠ Incompatible";
+        fila.querySelector(".costo").textContent = "-";
+      }
     } else {
-      content.classList.add('show');
-      btn.setAttribute('aria-expanded', 'true');
-      btn.textContent = '▼ ' + btn.textContent.replace('▼ ', '').replace('► ', '');
+      fila.querySelector(".equivalente").textContent = "-";
+      fila.querySelector(".costo").textContent = "-";
     }
+  });
+
+  // Mostrar en el subtotal listado de costos unitarios
+  if (resultados.length > 0) {
+    document.querySelector("#resultadoMateriales .result-text").innerHTML =
+      resultados.join("<br>");
+  } else {
+    document.querySelector("#resultadoMateriales .result-text").textContent =
+      "Sin materiales calculados";
+  }
+}
+
+function actualizarResumen() {
+    // ===== Materiales: mostrar solo costo unitario línea por línea =====
+    const filas = document.querySelectorAll("#tablaMateriales tbody tr");
+    let listaHTML = '';
+    filas.forEach(fila => {
+      const producto = fila.cells[0].querySelector("input").value || "(sin nombre)";
+      const costoText = fila.querySelector(".costo").textContent;
+      if(costoText && costoText !== '-' && !costoText.includes('⚠')) {
+        listaHTML += `<div>${producto}: ${costoText}</div>`;
+      }
+    });
+    document.getElementById("listaMateriales").innerHTML = listaHTML || "Sin materiales calculados";
+
+    // ===== Electricidad =====
+    const electText = document.getElementById("resultadoElect").querySelector(".result-text").textContent;
+    let subtotalElect = 0;
+    if(electText && electText.includes('$')){
+      subtotalElect = parseFloat(electText.replace(/[^0-9.-]+/g,""));
+    }
+    document.getElementById("subtotalElect").textContent = `$${subtotalElect.toFixed(2)}`;
+
+    // ===== Gas =====
+    const gasText = document.getElementById("resultadoGas1").querySelector(".result-text").textContent;
+    let subtotalGas = 0;
+    if(gasText && gasText.includes('$')){
+      subtotalGas = parseFloat(gasText.replace(/[^0-9.-]+/g,""));
+    }
+    document.getElementById("subtotalGas").textContent = `$${subtotalGas.toFixed(2)}`;
+
+    // ===== Mano de obra =====
+    const tiempoText = document.getElementById("resultadoTiempo").querySelector(".result-text").textContent;
+    let subtotalTiempo = 0;
+    if(tiempoText && tiempoText.includes('$')){
+      subtotalTiempo = parseFloat(tiempoText.replace(/[^0-9.-]+/g,""));
+    }
+    document.getElementById("subtotalTiempo").textContent = `$${subtotalTiempo.toFixed(2)}`;
+
+    // ===== Total =====
+    const total = subtotalElect + subtotalGas + subtotalTiempo; // Materiales no se suma al total
+    document.getElementById("totalFinal").textContent = `$${total.toFixed(2)}`;
   }
 </script>
 

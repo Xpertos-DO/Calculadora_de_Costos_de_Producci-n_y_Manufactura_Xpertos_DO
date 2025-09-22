@@ -1,0 +1,64 @@
+/*
+ARCHIVO: css/base.css
+ROL: Fundaciones de estilo. Variables CSS, tipografías, colores, inputs.
+
+TOC:
+  1) :root (variables)
+  2) body (tema)
+  3) encabezados y tipografía
+  4) labels e inputs/selects/buttons (estilo base)
+  5) estados de foco (accesibilidad)
+
+*/
+/* ========== Base (variables, tipografía, inputs) ========== */
+:root {
+  --bg: #0b0c0f;
+  --card: #12141a;
+  --muted: #989aa2;
+  --text: #ffffff;
+  --brand: #7c3aed;
+  --brand-2: #22c55e;
+  --stroke: rgba(255,255,255,.08);
+  --radius: 16px;
+}
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  background: radial-gradient(1200px 600px at 80% -10%, rgba(124,58,237,.25), transparent 60%),
+              radial-gradient(1000px 500px at -10% 10%, rgba(34,197,94,.18), transparent 60%),
+              var(--bg);
+  color: var(--text);
+  margin: 0; padding: 0;
+  line-height: 1.5;
+}
+h1, h3 {
+  color: var(--brand);
+  font-weight: 700;
+  margin-bottom: 0.1rem;
+}
+header p {
+  margin-bottom: 0rem; /* Sin espacio extra debajo de la descripción */
+}
+label {
+  display: block;
+  font-weight: 700;
+  margin-top: 1rem;
+  color: var(--muted);
+  font-size: 0.97rem;
+}
+input, select, button {
+  width: 100%;
+  padding: 0.7rem 1rem;
+  margin-top: 0.3rem;
+  border-radius: 10px;
+  border: 1.5px solid var(--stroke);
+  font-size: 1rem;
+  background: #0f1116;
+  color: var(--text);
+  box-sizing: border-box;
+  transition: border-color 0.3s;
+}
+input:focus, select:focus {
+  border-color: var(--brand);
+  outline: none;
+  box-shadow: 0 0 6px var(--brand);
+}

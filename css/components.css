@@ -1,0 +1,153 @@
+/*
+ARCHIVO: css/components.css
+ROL: Componentes reutilizables: cards, botones, avisos, colapsables.
+
+TOC:
+  1) .card y hover
+  2) .hint
+  3) .result / .error / .result-text / .button-group
+  4) Botones: .calc / .clear / .copy (+ :hover/:focus)
+  5) .toast (+ .show)
+  6) Colapsables: .collapse-content / .collapse-btn (+ :hover/:focus)
+
+*/
+/* ========== Componentes (cards, botones, bloques, toast, colapsables) ========== */
+.card {
+  background: var(--card);
+  border: 1.5px solid var(--stroke);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 16px rgba(124,58,237,.08);
+  padding: 1.5rem 2rem;
+  margin-bottom: 1rem;
+  transition: box-shadow 0.3s;
+}
+.card:hover {
+  box-shadow: 0 8px 32px rgba(124,58,237,.18);
+}
+.hint {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin-top: 0.25rem;
+}
+.result {
+  margin-top: 1rem;
+  padding: 1rem;
+  background: #181a20;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--brand);
+  min-height: 2.3em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid var(--stroke);
+}
+.error {
+  color: #ef4444;
+  font-weight: 700;
+  margin-top: 0.5rem;
+}
+.result-text {
+  flex-grow: 1;
+}
+.button-group {
+  display: flex;
+  align-items: center;
+}
+/* Botones */
+button.calc {
+  background: var(--brand);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  margin-top: 1rem;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border-radius: 12px;
+  transition: background 0.3s;
+}
+button.calc:hover, button.calc:focus {
+  background: #5b21b6;
+}
+button.clear {
+  background: #e60000;
+  margin-top: 0.5rem;
+  font-weight: 700;
+  border: none;
+  color: white;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  width: auto;
+  padding: 0.45rem 1rem;
+  transition: background 0.3s;
+}
+button.clear:hover, button.clear:focus {
+  background: #990000;
+}
+button.copy {
+  background: var(--brand-2);
+  margin-top: 0.5rem;
+  font-weight: 700;
+  border: none;
+  color: white;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  width: auto;
+  padding: 0.45rem 1rem;
+  transition: background 0.3s;
+  margin-left: 10px;
+}
+button.copy:hover, button.copy:focus {
+  background: #15803d;
+}
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #181a20;
+  color: #fff;
+  padding: 0.8em 2em;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 1rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s;
+  z-index: 9999;
+  border: 1px solid var(--stroke);
+}
+.toast.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+/* Colapsables */
+.collapse-content {
+  display: none;
+  transition: max-height 0.3s;
+}
+.collapse-content.show {
+  display: block;
+}
+.collapse-btn {
+  background: #181a20;
+  color: var(--brand);
+  border: 1.5px solid var(--stroke);
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  padding: 0.45rem 1rem;
+  width: auto;
+  font-size: 1rem;
+  transition: background 0.2s;
+  box-shadow: 0 2px 8px rgba(124,58,237,.08);
+}
+.collapse-btn:hover, .collapse-btn:focus {
+  background: #23262f;
+}

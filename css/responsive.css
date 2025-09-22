@@ -1,0 +1,25 @@
+/*
+ARCHIVO: css/responsive.css
+ROL: Ajustes responsive generales para pantallas pequeñas (<=480px).
+
+TOC:
+  1) .button-group column
+  2) Ajustes container y card
+
+*/
+/* ========== Responsive general (pequeñas pantallas) ========== */
+@media (max-width: 480px) {
+  .button-group {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  button.copy {
+    margin-left: 0;
+  }
+  .container {
+    padding: 0 0.3rem;
+  }
+  .card {
+    padding: 1rem 0.5rem;
+  }
+}

@@ -1,0 +1,41 @@
+/*
+ARCHIVO: css/table-materiales.css
+ROL: Estilos responsive específicos para la tabla de Materiales (mobile-first <=600px).
+
+TOC:
+  1) Oculta thead en móviles
+  2) Convierte filas en tarjetas
+  3) data-label en celdas
+
+*/
+/* ========== Tabla de Materiales (responsive específico) ========== */
+@media (max-width: 600px) {
+  #tablaMateriales, #tablaMateriales thead, #tablaMateriales tbody, #tablaMateriales tr, #tablaMateriales th, #tablaMateriales td {
+    display: block;
+    width: 100%;
+  }
+  #tablaMateriales thead {
+    display: none;
+  }
+  #tablaMateriales tr {
+    margin-bottom: 1.2em;
+    background: #181a20;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(124,58,237,.08);
+    padding: 0.7em 0.5em;
+    border: 1px solid var(--stroke);
+  }
+  #tablaMateriales td {
+    padding: 0.3em 0.2em;
+    border: none;
+    position: relative;
+  }
+  #tablaMateriales td:before {
+    content: attr(data-label);
+    font-weight: 700;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 0.2em;
+    font-size: 0.9em;
+  }
+}

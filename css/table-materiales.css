@@ -39,3 +39,35 @@ TOC:
     font-size: 0.9em;
   }
 }
+/* ====================== Laptops & Desktop (>=1024px) ====================== */
+@media (min-width: 1024px) {
+  /* Distribución estable y aprovechamiento del ancho */
+  #tablaMateriales {
+    table-layout: fixed;
+  }
+  #tablaMateriales th,
+  #tablaMateriales td {
+    padding: 0.6rem 0.5rem;
+    vertical-align: middle;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  #tablaMateriales input,
+  #tablaMateriales select {
+    width: 100%;
+  }
+}
+/* === PRO POLISH ADDITIONS (table visuals on desktop) === */
+@media (min-width:1024px){
+  #tablaMateriales thead th{
+    position:sticky; top:0;
+    background:#12141a; z-index:1;
+    border-bottom:1px solid var(--stroke);
+  }
+  #tablaMateriales tbody tr:nth-child(odd){ background: rgba(124,58,237,.035); }
+  #tablaMateriales tbody tr:hover{ background: rgba(124,58,237,.08); }
+  /* Alinea números a la derecha (ajusta columnas finales si cambian) */
+  #tablaMateriales td:nth-last-child(3),
+  #tablaMateriales td:nth-last-child(2){ text-align:right; }
+}

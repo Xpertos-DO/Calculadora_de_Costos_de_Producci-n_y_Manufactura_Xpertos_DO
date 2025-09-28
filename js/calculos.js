@@ -48,7 +48,7 @@ function calcularElectricidad() {
   const campos = [
     {id: "potencia", nombre: "Consumo del equipo (W)", min: 0.1},
     {id: "tiempoUsoElect", nombre: "Duración de un lote (h)", min: 0.01},
-    {id: "frecuencia", nombre: "Lotes al mes", min: 1},
+    {id: "unidadesPorLoteElect", nombre: "Unidades por lote", min: 1},
     {id: "precioKwh", nombre: "Costo por kWh de electricidad", min: 0.001},
   ];
   const error = validarCampos(campos);
@@ -58,31 +58,38 @@ function calcularElectricidad() {
   }
   const W = parseFloat(document.getElementById("potencia").value);
   const horas = parseFloat(document.getElementById("tiempoUsoElect").value);
-  const lotes = parseFloat(document.getElementById("frecuencia").value);
+  const unidades = parseFloat(document.getElementById("unidadesPorLoteElect").value);
   const precio = parseFloat(document.getElementById("precioKwh").value);
-  const total = (W * horas * lotes / 1000) * precio;
-  mostrarResultado("resultadoElect", `Costo mensual: $${total.toFixed(2)}`);
+  const costoLoteElect = (W * horas / 1000) * precio;
+  const costoUnidadElect = costoLoteElect / unidades;
+  mostrarResultado("resultadoElect", `Costo por unidad: $${costoUnidadElect.toFixed(2)} | Costo por lote: $${costoLoteElect.toFixed(2)}`);
 }
 
 // ==== Cálculo Gas ====
 function calcularGas(num) {
   const campos = [
-    {id: `btuCilindro${num}`, nombre: "Capacidad total de gas del cilindro (BTU)", min: 1},
+    {id: `btuPorGalon${num}`, nombre: "BTU por galón de GLP", min: 1},
     {id: `btuQuemador${num}`, nombre: "Potencia del quemador (BTU/h)", min: 1},
     {id: `tiempoUsoGas${num}`, nombre: "Duración de uso del quemador por lote (h)", min: 0.01},
-    {id: `precioCilindro${num}`, nombre: "Costo de llenado del cilindro", min: 0.01},
+    {id: `precioGalon${num}`, nombre: "Costo por galón de GLP", min: 0.01},
+    {id: `unidadesPorLoteGas${num}`, nombre: "Unidades por lote", min: 1},
   ];
   const error = validarCampos(campos);
   if (error) {
     mostrarResultado(`resultadoGas${num}`, error, true);
     return;
   }
-  const btuCil = parseFloat(document.getElementById(`btuCilindro${num}`).value);
+  const btuPorGal = parseFloat(document.getElementById(`btuPorGalon${num}`).value);
   const btuQuem = parseFloat(document.getElementById(`btuQuemador${num}`).value);
   const horas = parseFloat(document.getElementById(`tiempoUsoGas${num}`).value);
-  const precioCil = parseFloat(document.getElementById(`precioCilindro${num}`).value);
-  const total = ((btuQuem * horas) / btuCil) * precioCil;
-  mostrarResultado(`resultadoGas${num}`, `Costo por lote: $${total.toFixed(2)}`);
+  const precioGal = parseFloat(document.getElementById(`precioGalon${num}`).value);
+  const unidadesLote = parseFloat(document.getElementById(`unidadesPorLoteGas${num}`).value);
+
+  const galonesConsumidos = (btuQuem * horas) / btuPorGal;
+  const costoLoteGas = galonesConsumidos * precioGal;
+  const costoUnidadGas = costoLoteGas / unidadesLote;
+
+  mostrarResultado(`resultadoGas${num}`, `Costo por unidad: $${costoUnidadGas.toFixed(2)} | Costo por lote: $${costoLoteGas.toFixed(2)} `);
 }
 
 // ==== Cálculo Tiempo (Mano de obra) ====

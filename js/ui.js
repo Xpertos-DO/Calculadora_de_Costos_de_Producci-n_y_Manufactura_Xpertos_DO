@@ -53,11 +53,11 @@ function limpiarSeccion(seccion) {
   let resultadoDiv;
   switch(seccion) {
     case 'electricidad':
-      inputs = ['potencia','tiempoUsoElect','frecuencia','precioKwh'];
+      inputs = ['potencia','tiempoUsoElect','unidadesPorLoteElect','precioKwh'];
       resultadoDiv = 'resultadoElect';
       break;
     case 'gas1':
-      inputs = ['btuCilindro1','btuQuemador1','tiempoUsoGas1','precioCilindro1'];
+      inputs = ['btuPorGalon1','btuQuemador1','tiempoUsoGas1','precioGalon1','unidadesPorLoteGas1'];
       resultadoDiv = 'resultadoGas1';
       break;
     case 'tiempo':

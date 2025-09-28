@@ -151,3 +151,76 @@ button.copy:hover, button.copy:focus {
 .collapse-btn:hover, .collapse-btn:focus {
   background: #23262f;
 }
+/* === PRO POLISH ADDITIONS (headers, state, chips) === */
+.collapse-btn{
+  display:flex; align-items:center; gap:.5rem;
+  border-left:4px solid var(--brand);
+  letter-spacing:.2px;
+}
+.card:has(.result .result-text:not(:empty)) .collapse-btn{
+  border-left-color: var(--brand-2);
+}
+.card:has(.error) .collapse-btn{
+  border-left-color:#ef4444;
+}
+/* Chips para subtotales del resumen */
+#tablaResumen td:nth-child(2){
+  font-weight:700;
+  background:#181a20;
+  border:1px solid var(--stroke);
+  padding:.35rem .6rem;
+  border-radius:999px;
+  display:inline-block;
+  min-width:7ch; text-align:right;
+}
+/* === Resumen: versión compacta === */
+#card-resumen.card{
+  padding: .75rem 1rem;     /* antes 1.5rem 2rem del .card base */
+  margin-bottom: .6rem;
+}
+#card-resumen .collapse-btn{
+  margin-bottom:.5rem;
+  padding:.35rem .75rem;
+  font-size:.95rem;
+}
+
+/* Tabla del resumen más apretada */
+#tablaResumen{
+  width:100%;
+  border-collapse: collapse;
+  font-size:.95rem;
+}
+#tablaResumen th,
+#tablaResumen td{
+  padding:.35rem .5rem;
+  line-height:1.25;
+}
+/* Chip de monto un poco más corto */
+#tablaResumen td:nth-child(2){
+  min-width:6ch;
+  padding:.3rem .55rem;
+}
+
+/* Lista de materiales con altura limitada y scroll si crece */
+#listaMateriales{
+  max-height: 120px;
+  overflow:auto;
+  padding:.35rem .5rem;
+  background:#0f1116;
+  border:1px solid var(--stroke);
+  border-radius:10px;
+}
+/* ===== Acento por sección (sin tocar HTML) ===== */
+
+/* Base: todos los títulos usan la variable --accent si existe */
+.card .collapse-btn{
+  border-left: 6px solid var(--accent, var(--brand)); /* fallback: var(--brand) */
+  padding-left: 1rem;                                  /* espacio para el acento */
+}
+
+/* Colores por sección */
+#card-materiales{    --accent: #22c55e; } /* Verde */
+#card-electricidad{  --accent: #7c3aed; } /* Morado */
+#card-gas1{          --accent: #f59e0b; } /* Naranja (GLP) */
+#card-tiempo{        --accent: #0ea5e9; } /* Azul (tiempo) */
+#card-resumen{       --accent: #14b8a6; } /* Turquesa (resumen) */

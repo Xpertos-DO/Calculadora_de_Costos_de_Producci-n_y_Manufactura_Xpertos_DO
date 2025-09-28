@@ -23,3 +23,74 @@ TOC:
     padding: 1rem 0.5rem;
   }
 }
+/* ====================== Laptops & Desktop (>=1024px) ====================== */
+@media (min-width: 1024px) {
+
+  /* Grid por columnas, 2 filas fijas: 1 = etiqueta, 2 = campo */
+  .card .table-responsive {
+    display: grid;
+    grid-template-rows: auto auto;      /* fila 1: label, fila 2: input/select */
+    grid-auto-flow: column;             /* empareja en columnas: (label,input) */
+    grid-auto-columns: minmax(220px, 1fr);
+    gap: 0.75rem 1.25rem;
+    align-items: start;
+  }
+
+  /* Caso A: label seguido de input/select (no anidado) → fuerza el campo a la fila 2
+     y ambos quedan en la MISMA columna gracias al auto-flow: column */
+  .card .table-responsive label + input,
+  .card .table-responsive label + select {
+    grid-row: 2;
+    width: 100%;
+  }
+
+  /* Caso B: label que CONTIENE el input/select → que ocupe las 2 filas y apile su contenido */
+  .card .table-responsive label:has(input),
+  .card .table-responsive label:has(select) {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    grid-row: 1 / span 2;               /* toma filas 1 y 2 de su columna */
+  }
+
+  /* Pulido visual */
+  .card .table-responsive label { margin: 0; }
+  .card .table-responsive input,
+  .card .table-responsive select { width: 100%; }
+}
+
+/* Opcional: más aire en pantallas muy anchas */
+@media (min-width: 1440px) {
+  .card .table-responsive { grid-auto-columns: minmax(240px, 1fr); }
+}
+
+/* ======= FIX: Gas no debe salirse del card en laptops ======= */
+@media (min-width: 1024px) {
+  /* 1) Permitir que los controles encojan dentro de la columna del grid */
+  #card-gas1 .table-responsive input,
+  #card-gas1 .table-responsive select {
+    min-width: 0;     /* crítico para que no “empujen” el grid hacia fuera */
+    max-width: 100%;
+    width: 100%;
+  }
+
+  /* 2) Reducir base de cada columna y el gap para que quepan sin overflow */
+  #card-gas1 .table-responsive {
+    grid-auto-columns: minmax(200px, 1fr); /* antes 220px */
+    gap: 0.6rem 1rem;                       /* antes más grande */
+  }
+
+  /* 3) Que las etiquetas puedan partir línea y no fuercen el ancho */
+  #card-gas1 .table-responsive label {
+    white-space: normal;
+    line-height: 1.2;
+  }
+}
+
+/* Laptops más angostos: aprieta un poco más las columnas */
+@media (min-width: 1024px) and (max-width: 1280px) {
+  #card-gas1 .table-responsive {
+    grid-auto-columns: minmax(180px, 1fr);
+  }
+}
+

@@ -61,123 +61,123 @@ Checklist de desarrollo:
   <meta name="twitter:description" content="Convierte unidades y calcula costos de Electricidad, GLP y Mano de Obra.">
   <meta name="twitter:image" content="assets/og-xpertos.png">
 </head>
+
 <body>
+  <header>
+    <img src="img/xpertos_blanco.png" alt="Logo de Xpertos" />
+    <h1>Calculadora de Costos de Producción</h1>
+    <p>Conversión de unidades, costo Eléctrico, GLP y Mano de Obra </p>
+  </header>
 
-
-<header>
-  <img src="img/xpertos_blanco.png" alt="Logo de Xpertos" />
-  <h1>Calculadora de Costos de Producción</h1>
-  <p>Conversión de unidades, costo Eléctrico, GLP y Mano de Obra </p>
-</header>
-
-<!-- ======================================
+  <!-- ======================================
      FRANJA HORIZONTAL: Conecta / Descarga
      ====================================== -->
-<nav class="social-strip" aria-label="Conecta y descarga Xpertos">
-  <!-- Instagram -->
-  <a class="chip ig" href="https://www.instagram.com/xpertos_do?igsh=MW01cHBvczljaHBmOA==" target="_blank" rel="noopener noreferrer" aria-label="Instagram @xpertos_do" title="Instagram @xpertos_do">
-    <svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22">
-      <rect x="2" y="2" width="20" height="20" rx="5" fill="currentColor" opacity="0.25"/>
-      <circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="2" fill="none"/>
-      <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/>
-    </svg>
-    <span>@xpertos_do</span>
-  </a>
-
-  <!-- WhatsApp -->
-  <a class="chip wa" href="https://wa.me/18495273305" target="_blank" rel="noopener noreferrer" aria-label="Escríbenos por WhatsApp" title="WhatsApp">
-    <svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22">
-      <path d="M20.5 3.5A10 10 0 0 0 3.3 16.8L2 22l5.4-1.4A10 10 0 1 0 20.5 3.5zM12 4a8 8 0 0 1 0 16 7.9 7.9 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 0 1 12 4zm4.5 10.7c-.2-.1-1.3-.6-1.4-.7s-.3-.1-.5.1c-.1.2-.6.7-.7.8-.1.1-.2.1-.4 0-1.2-.6-2.1-1.1-2.9-2-0.8-.9-1.3-1.8-1.9-3 0-.1 0-.2.1-.3l.6-.7c.1-.1.1-.2.1-.3s-.1-.2-.1-.3c0-.1-.5-1.2-.7-1.6-.2-.4-.4-.4-.6-.4h-.5c-.2 0-.3 0-.5.2-.2.2-.7.7-.7 1.7 0 1 .7 2 0.8 2.1 0 .1 1.3 2.3 3.2 3.9s3.8 2.3 3.9 2.4c.2.1 1.6.5 2.2.3.5-.1 1.2-.5 1.3-1 .1-.5.1-.9.1-1 0-.2-.2-.2-.4-.3z" fill="currentColor"/>
-    </svg>
-    <span>+1 849 527 3305</span>
-  </a>
-
-  <!-- Google Play -->
-  <a class="chip play" href="https://play.google.com/store/apps/details?id=com.Xperto.Xperto" target="_blank" rel="noopener noreferrer" aria-label="Descargar en Google Play" title="Google Play">
-    <svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22">
-      <path d="M3 3l12.5 9L3 21z" fill="currentColor"/>
-      <path d="M15.5 12L20.5 9.5a2 2 0 0 1 0 5L15.5 12z" fill="currentColor" opacity="0.6"/>
-    </svg>
-    <span>Google Play</span>
-  </a>
-
-  <!-- App Store -->
-  <a class="chip appstore" href="https://apps.apple.com/do/app/xpertos/id6742215137" target="_blank" rel="noopener noreferrer" aria-label="Descargar en App Store" title="App Store">
-    <svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22">
-      <path d="M16.5 2.5c-1.3.1-2.8.9-3.6 2-0.8 1.1-1.2 2.6-1 4.1 1.5.1 3-.7 3.8-1.8.8-1.1 1.3-2.6 0.8-4.3zM20.8 17.3c-.5 1.1-1 2-1.7 2.9-.9 1.1-1.9 2.3-3.2 2.3-1.2 0-1.6-.8-3.1-.8-1.5 0-2 .8-3.2.8-1.3 0-2.2-1-3.1-2.1-1.7-2.1-3-5.8-1.2-8.3.8-1.1 2.2-1.9 3.6-1.9 1.4 0 2.4.8 3.1.8.7 0 2-.9 3.5-.8 0 0 2.6.2 3.8 2.2-2 .9-2.8 3.3-2.8 5 0 2 .9 3.8 2.3 4.7z" fill="currentColor"/>
-    </svg>
-    <span>App Store</span>
-  </a>
-</nav>
-
-
-<main class="container" role="main">
-
-  <!-- MATERIALES (Masa) -->
-  <section class="card" id="card-materiales" aria-labelledby="materiales-title">
-    <h3 id="materiales-title" class="collapse-btn" tabindex="0" role="button" aria-expanded="true" aria-controls="collapse-materiales"
-        onclick="toggleCollapse('collapse-materiales')" onkeydown="if(event.key==='Enter'||event.key===' ')toggleCollapse('collapse-materiales')">
-       Materiales 
-    </h3>
-    <div id="collapse-materiales" class="collapse-content show">
-
-      <div id="contenedorMateriales">
-    <table id="tablaMateriales" style="width:100%;border-collapse:collapse;">
+  <nav class="social-strip" aria-label="Conecta y descarga Xpertos">
     
-          <thead>
-            <tr style="color:var(--muted);text-align:left;">
-              <th>Producto</th>
-              <th>Cantidad compra</th>
-              <th>Unidad compra</th>
-              <th>Precio total</th>
-              <th>Unidad transformación</th>
-              <th>Cantidad equivalente</th>
-              <th>Costo por unidad</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
+    <!-- Instagram -->
+    <a class="chip ig" href="https://www.instagram.com/xpertos_do?igsh=MW01cHBvczljaHBmOA==" target="_blank" rel="noopener noreferrer" aria-label="Instagram @xpertos_do" title="Instagram @xpertos_do">
+      <svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22">
+        <rect x="2" y="2" width="20" height="20" rx="5" fill="currentColor" opacity="0.25"/>
+        <circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="2" fill="none"/>
+        <circle cx="17.5" cy="6.5" r="1.2" fill="currentColor"/>
+      </svg>
+      <span>@xpertos_do</span>
+    </a>
 
-      <button class="calc" type="button" onclick="agregarMaterial()">+ Agregar material</button>
-      <div class="result" aria-live="polite" id="resultadoMateriales">
-        <span class="result-text">Subtotal materiales: $0.00</span>
-      </div>
-    </div>
-  </section>
+    <!-- WhatsApp -->
+    <a class="chip wa" href="https://wa.me/18495273305" target="_blank" rel="noopener noreferrer" aria-label="Escríbenos por WhatsApp" title="WhatsApp">
+      <svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22">
+        <path d="M20.5 3.5A10 10 0 0 0 3.3 16.8L2 22l5.4-1.4A10 10 0 1 0 20.5 3.5zM12 4a8 8 0 0 1 0 16 7.9 7.9 0 0 1-4.1-1.1l-.3-.2-3 .8.8-2.9-.2-.3A8 8 0 0 1 12 4zm4.5 10.7c-.2-.1-1.3-.6-1.4-.7s-.3-.1-.5.1c-.1.2-.6.7-.7.8-.1.1-.2.1-.4 0-1.2-.6-2.1-1.1-2.9-2-0.8-.9-1.3-1.8-1.9-3 0-.1 0-.2.1-.3l.6-.7c.1-.1.1-.2.1-.3s-.1-.2-.1-.3c0-.1-.5-1.2-.7-1.6-.2-.4-.4-.4-.6-.4h-.5c-.2 0-.3 0-.5.2-.2.2-.7.7-.7 1.7 0 1 .7 2 0.8 2.1 0 .1 1.3 2.3 3.2 3.9s3.8 2.3 3.9 2.4c.2.1 1.6.5 2.2.3.5-.1 1.2-.5 1.3-1 .1-.5.1-.9.1-1 0-.2-.2-.2-.4-.3z" fill="currentColor"/>
+      </svg>
+      <span>+1 849 527 3305</span>
+    </a>
 
-  <!-- ELECTRICIDAD -->
-  <section class="card" id="card-electricidad" aria-labelledby="electricidad-title">
-    <h3 id="electricidad-title" class="collapse-btn" tabindex="0" role="button" aria-expanded="true" aria-controls="collapse-electricidad"
-        onclick="toggleCollapse('collapse-electricidad')" onkeydown="if(event.key==='Enter'||event.key===' ')toggleCollapse('collapse-electricidad')">
-       Electricidad
-    </h3>
-    <div id="collapse-electricidad" class="collapse-content show">
-    <div class="table-responsive">
-      <label for="potencia">Consumo del equipo (W/h)
-      <input id="potencia" type="number" min="0" step="1" placeholder="Ej: Potencia que consume el equipo, en Watts 300 (ver etiqueta o manual)" aria-describedby="potenciaHelp" />
-      </label>
-      <label for="tiempoUsoElect">Duración de un lote (h)</label>
-      <input id="tiempoUsoElect" type="number" min="0" step="0.01" placeholder="Tiempo que el equipo está encendido para producir un lote, en horas." aria-describedby="tiempoUsoElectHelp" />
+    <!-- Google Play -->
+    <a class="chip play" href="https://play.google.com/store/apps/details?id=com.Xperto.Xperto" target="_blank" rel="noopener noreferrer" aria-label="Descargar en Google Play" title="Google Play">
+      <svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22">
+        <path d="M3 3l12.5 9L3 21z" fill="currentColor"/>
+        <path d="M15.5 12L20.5 9.5a2 2 0 0 1 0 5L15.5 12z" fill="currentColor" opacity="0.6"/>
+      </svg>
+      <span>Google Play</span>
+    </a>
 
-      <label for="unidadesPorLoteElect">Unidades por lote</label>
-      <input id="unidadesPorLoteElect" type="number" min="0" step="1" placeholder="Cantidad de lotes que produces en un mes." aria-describedby="unidadesPorLoteElectHelp" />
+    <!-- App Store -->
+    <a class="chip appstore" href="https://apps.apple.com/do/app/xpertos/id6742215137" target="_blank" rel="noopener noreferrer" aria-label="Descargar en App Store" title="App Store">
+      <svg aria-hidden="true" viewBox="0 0 24 24" width="22" height="22">
+        <path d="M16.5 2.5c-1.3.1-2.8.9-3.6 2-0.8 1.1-1.2 2.6-1 4.1 1.5.1 3-.7 3.8-1.8.8-1.1 1.3-2.6 0.8-4.3zM20.8 17.3c-.5 1.1-1 2-1.7 2.9-.9 1.1-1.9 2.3-3.2 2.3-1.2 0-1.6-.8-3.1-.8-1.5 0-2 .8-3.2.8-1.3 0-2.2-1-3.1-2.1-1.7-2.1-3-5.8-1.2-8.3.8-1.1 2.2-1.9 3.6-1.9 1.4 0 2.4.8 3.1.8.7 0 2-.9 3.5-.8 0 0 2.6.2 3.8 2.2-2 .9-2.8 3.3-2.8 5 0 2 .9 3.8 2.3 4.7z" fill="currentColor"/>
+      </svg>
+      <span>App Store</span>
+    </a>
+  </nav>
 
-      <label for="precioKwh">Costo por kWh de electricidad</label>
-      <input id="precioKwh" type="number" min="0" step="0.0001" placeholder="Precio por kWh según tu factura de electricidad." aria-describedby="precioKwhHelp" />
-      </div>
-      <div class="hint">Fórmula: (W × horas ÷ 1000 × costo kWh) ÷ unidades por lote</div>
-      <button class="calc" type="button" onclick="calcularElectricidad()">Calcular Electricidad</button>
-      <div class="result" aria-live="polite" id="resultadoElect">
-        <span class="result-text"></span>
-        <div class="button-group" style="display:none;">
-          <button class="copy" type="button" aria-label="Copiar resultado" onclick="copiarResultado('resultadoElect')">Copiar</button>
-          <button class="clear" type="button" aria-label="Limpiar sección" onclick="limpiarSeccion('electricidad')">Limpiar</button>
+
+  <main class="container" role="main">
+
+    <!-- MATERIALES (Masa) -->
+    <section class="card" id="card-materiales" aria-labelledby="materiales-title">
+      <h3 id="materiales-title" class="collapse-btn" tabindex="0" role="button" aria-expanded="true" aria-controls="collapse-materiales"
+          onclick="toggleCollapse('collapse-materiales')" onkeydown="if(event.key==='Enter'||event.key===' ')toggleCollapse('collapse-materiales')">
+        Materiales 
+      </h3>
+      <div id="collapse-materiales" class="collapse-content show">
+
+        <div id="contenedorMateriales">
+      <table id="tablaMateriales" style="width:100%;border-collapse:collapse;">
+      
+            <thead>
+              <tr style="color:var(--muted);text-align:left;">
+                <th>Producto</th>
+                <th>Cantidad compra</th>
+                <th>Unidad compra</th>
+                <th>Precio total</th>
+                <th>Unidad producción</th>
+                <th>Equivalente</th>
+                <th>Costo por unidad</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <button class="calc" type="button" onclick="agregarMaterial()">+ Agregar material</button>
+        <div class="result" aria-live="polite" id="resultadoMateriales">
+          <span class="result-text">Subtotal materiales: $0.00</span>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <!-- ELECTRICIDAD -->
+    <section class="card" id="card-electricidad" aria-labelledby="electricidad-title">
+      <h3 id="electricidad-title" class="collapse-btn" tabindex="0" role="button" aria-expanded="true" aria-controls="collapse-electricidad"
+          onclick="toggleCollapse('collapse-electricidad')" onkeydown="if(event.key==='Enter'||event.key===' ')toggleCollapse('collapse-electricidad')">
+        Electricidad
+      </h3>
+      <div id="collapse-electricidad" class="collapse-content show">
+      <div class="table-responsive">
+        <label for="potencia">Consumo del equipo (W/h)
+        <input id="potencia" type="number" min="0" step="1" placeholder="Potencia que consume el equipo" aria-describedby="potenciaHelp" />
+        </label>
+        <label for="tiempoUsoElect">Duración de un lote (h)</label>
+        <input id="tiempoUsoElect" type="number" min="0" step="0.01" placeholder="Tiempo usando el equipo." aria-describedby="tiempoUsoElectHelp" />
+
+        <label for="unidadesPorLoteElect">Unidades por lote</label>
+        <input id="unidadesPorLoteElect" type="number" min="0" step="1" placeholder="Cantidad de unidades por corrida." aria-describedby="unidadesPorLoteElectHelp" />
+
+        <label for="precioKwh">Costo por kWh de electricidad</label>
+        <input id="precioKwh" type="number" min="0" step="0.0001" placeholder="Precio por kWh según tu factura de electricidad." aria-describedby="precioKwhHelp" />
+        </div>
+        <div class="hint">Fórmula: (W × horas ÷ 1000 × costo kWh) ÷ unidades por lote</div>
+        <button class="calc" type="button" onclick="calcularElectricidad()">Calcular Electricidad</button>
+        <div class="result" aria-live="polite" id="resultadoElect">
+          <span class="result-text"></span>
+          <div class="button-group" style="display:none;">
+            <button class="copy" type="button" aria-label="Copiar resultado" onclick="copiarResultado('resultadoElect')">Copiar</button>
+            <button class="clear" type="button" aria-label="Limpiar sección" onclick="limpiarSeccion('electricidad')">Limpiar</button>
+          </div>
+        </div>
+      </div>
+    </section>
 
   <!-- GAS -->
   <section class="card" id="card-gas1" aria-labelledby="gas-title">
@@ -188,7 +188,7 @@ Checklist de desarrollo:
     <div id="collapse-gas1" class="collapse-content show">
     <div class="table-responsive">
       <label for="btuPorGalon1">BTU por galón de GLP
-      <input id="btuPorGalon1" type="number" min="0" step="1" value="91500" placeholder="Valor típico para cilindro de 91,500 BTU/gal." aria-describedby="btuPorGalonHelp" />
+      <input id="btuPorGalon1" type="number" min="0" step="1" value="91500" placeholder="1 Galón de GLP = 91,500 BTU." aria-describedby="btuPorGalonHelp" />
       </label>
       <label for="btuQuemador1">Potencia del quemador (BTU/h)</label>
       <select id="btuQuemador1" aria-describedby="btuQuemadorHelp">
@@ -199,12 +199,12 @@ Checklist de desarrollo:
       </select>
 
       <label for="tiempoUsoGas1">Tiempo de Uso por lote (h)</label>
-      <input id="tiempoUsoGas1" type="number" min="0" step="0.01" placeholder="Tiempo que el quemador está encendido para un lote." aria-describedby="tiempoUsoGasHelp" />
+      <input id="tiempoUsoGas1" type="number" min="0" step="0.01" placeholder="Tiempo con la hornilla encendida." aria-describedby="tiempoUsoGasHelp" />
       <label for="unidadesPorLoteGas1">Unidades por lote</label>
       <input id="unidadesPorLoteGas1" type="number" min="1" step="1" placeholder="Ej: 100" aria-describedby="unidadesPorLoteGasHelp" />
 
       <label for="precioGalon1">Costo por galón de GLP</label>
-      <input id="precioGalon1" type="number" min="0" step="0.01" placeholder="Precio que pagas por rellenar o cambiar el cilindro." aria-describedby="precioGalonHelp" />
+      <input id="precioGalon1" type="number" min="0" step="0.01" placeholder="Precio por galón de GLP." aria-describedby="precioGalonHelp" />
       </div>
       <div class="hint">Fórmula por lote: (BTU/h × horas ÷ BTU/gal) × costo/galón · por unidad: (resultado ÷ unidades por lote)</div>
       <button class="calc" type="button" onclick="calcularGas(1)">Calcular Gas</button>
@@ -230,10 +230,10 @@ Checklist de desarrollo:
       <input id="tiempoLoteMin" type="number" min="0" step="0.1" placeholder="Incluye preparación, cocción y empaquetado." aria-describedby="tiempoLoteMinHelp" />
         </label>
       <label for="cantidadProductos">Unidades producidas por lote</label>
-      <input id="cantidadProductos" type="number" min="1" step="1" placeholder="Cantidad de piezas o productos terminados en un lote." aria-describedby="cantidadProductosHelp" />
+      <input id="cantidadProductos" type="number" min="1" step="1" placeholder="Cantidad de productos terminados en un lote." aria-describedby="cantidadProductosHelp" />
 
       <label for="salarioHora">Costo por hora de mano de obra</label>
-      <input id="salarioHora" type="number" min="0" step="0.01" placeholder="Lo que te pagas a ti mismo o a un trabajador por hora." aria-describedby="salarioHoraHelp" />
+      <input id="salarioHora" type="number" min="0" step="0.01" placeholder="Sueldo por hora." aria-describedby="salarioHoraHelp" />
       </div>
       <div class="hint">Fórmula por producto: (min ÷ 60 ÷ unidades) × costo/hora</div>
       <button class="calc" type="button" onclick="calcularTiempo()">Calcular Tiempo</button>
@@ -294,14 +294,14 @@ Checklist de desarrollo:
 
 </main>
 
-<!-- Notificación visual -->
-<div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <!-- Notificación visual -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-<!-- Scripts -->
-<script src="js/ui.js"></script>
-<script src="js/materiales.js"></script>
-<script src="js/calculos.js"></script>
-<script src="js/main.js"></script>
+  <!-- Scripts -->
+  <script src="js/ui.js"></script>
+  <script src="js/materiales.js"></script>
+  <script src="js/calculos.js"></script>
+  <script src="js/main.js"></script>
 
 </body>
   <footer class="site-footer" role="contentinfo">

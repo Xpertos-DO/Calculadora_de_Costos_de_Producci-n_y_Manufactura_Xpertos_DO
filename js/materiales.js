@@ -17,80 +17,153 @@ Notas:
   - Mantener precisión de toFixed(4) para costos unitarios.
 
 */
+// === Helpers de UI de unidades (agrupadas por magnitud) ===
+const _etiquetasMagnitud = {
+  masa: "Masa (peso)",
+  volumen: "Volumen",
+  longitud: "Longitud",
+  area: "Área",
+  unidad: "Unidades (conteo)",
+};
+const _ordenCategorias = ["masa", "volumen", "longitud", "area", "unidad"];
+const _ordenUnidades = {
+  masa: ["kg", "g", "lb", "oz"],
+  volumen: ["L", "ml", "gal", "floz"],
+  longitud: ["m", "cm", "mm", "in", "ft"],
+  area: ["m2", "cm2", "in2", "ft2"],
+  unidad: ["u"],
+};
+const _labelUnidad = {
+  kg: "kg", g: "g", lb: "lb", oz: "oz",
+  L: "L", ml: "ml", gal: "gal (US)", floz: "fl oz (US)",
+  m: "m", cm: "cm", mm: "mm", in: "in", ft: "ft",
+  m2: "m²", cm2: "cm²", in2: "in²", ft2: "ft²",
+  u: "unidad"
+};
+
+// Construye las <option> de un <select>, con soporte para <optgroup> por magnitud
+function _poblarSelectUnidades(select, categorias, usarGrupos = true) {
+  select.innerHTML = ""; // limpia
+  // Placeholder
+  const ph = document.createElement("option");
+  ph.value = ""; ph.textContent = "--";
+  select.appendChild(ph);
+
+  if (usarGrupos && categorias.length > 1) {
+    _ordenCategorias.forEach(cat => {
+      if (!categorias.includes(cat)) return;
+      const og = document.createElement("optgroup");
+      og.label = _etiquetasMagnitud[cat];
+      _ordenUnidades[cat].forEach(u => {
+        const opt = document.createElement("option");
+        opt.value = u; opt.textContent = _labelUnidad[u] || u;
+        og.appendChild(opt);
+      });
+      select.appendChild(og);
+    });
+  } else {
+    const cat = categorias[0];
+    _ordenUnidades[cat].forEach(u => {
+      const opt = document.createElement("option");
+      opt.value = u; opt.textContent = _labelUnidad[u] || u;
+      select.appendChild(opt);
+    });
+  }
+}
+
+// Inicializa los dos selects de una fila recién creada
+function _initSelectsFila(fila) {
+  const selCompra = fila.querySelector("select.unidad-compra");
+  const selTransf = fila.querySelector("select.unidad-transf");
+  const chipMagnitudCompra = fila.querySelector(".magnitud-compra");
+  const chipMagnitudTransf = fila.querySelector(".magnitud-transf");
+
+  // Compra: todas las categorías, agrupadas
+  _poblarSelectUnidades(selCompra, _ordenCategorias, true);
+
+  // Transformación: deshabilitado hasta que elijan compra
+  selTransf.disabled = true;
+  _poblarSelectUnidades(selTransf, ["masa"], false); // relleno neutro
+
+  // Mostrar/actualizar chip de magnitud
+  const _setChip = (el, cat) => {
+    el.textContent = cat ? `Magnitud: ${_etiquetasMagnitud[cat]}` : "";
+  };
+
+  selCompra.addEventListener("change", () => {
+    const u = selCompra.value;
+    const cat = u ? categoriaDeUnidad(u) : null;
+    _setChip(chipMagnitudCompra, cat);
+
+    // Re-armar transformación con la misma magnitud
+    if (cat) {
+      _poblarSelectUnidades(selTransf, [cat], false);
+      selTransf.disabled = false;
+
+      // Opcional: preseleccionar la MISMA unidad como destino
+      const same = [...selTransf.options].find(o => o.value === u);
+      selTransf.value = same ? u : "";
+      _setChip(chipMagnitudTransf, cat);
+
+      // Aviso amable
+      try { mostrarToast(`Transformación limitada a ${_etiquetasMagnitud[cat]}.`); } catch(e){}
+    } else {
+      selTransf.disabled = true;
+      selTransf.value = "";
+      _setChip(chipMagnitudTransf, null);
+    }
+
+    // Recalcular cuando cambia
+    calcularMateriales();
+  });
+  selTransf.addEventListener("change", calcularMateriales);
+}
+
+// === Reemplazo: agregarMaterial con selects “inteligentes” y chips de magnitud ===
 function agregarMaterial() {
   const tbody = document.querySelector("#tablaMateriales tbody");
 
   const fila = document.createElement("tr");
   fila.innerHTML = `
-    <td data-label="Producto"><input type="text" placeholder="Ej: Harina"></td>
-    <td data-label="Cantidad compra"><input type="number" min="0" step="0.01" placeholder="Ej: 100"></td>
+    <td data-label="Producto">
+      <input type="text" placeholder="Ej: Harina">
+    </td>
+
+    <td data-label="Cantidad compra">
+      <input type="number" min="0" step="0.01" placeholder="Ej: 100">
+    </td>
+
     <td data-label="Unidad compra">
-      <select>
-        <option value="">--</option>
-        <!-- MASA -->
-        <option value="kg">kg</option>
-        <option value="g">g</option>
-        <option value="lb">lb</option>
-        <option value="oz">oz</option>
-        <!-- VOLUMEN -->
-        <option value="L">L</option>
-        <option value="ml">ml</option>
-        <option value="gal">gal (US)</option>
-        <option value="floz">oz líquida (US)</option>
-        <!-- LONGITUD -->
-        <option value="m">m</option>
-        <option value="cm">cm</option>
-        <option value="mm">mm</option>
-        <option value="in">pulgada</option>
-        <option value="ft">pie</option>
-        <!-- AREA -->
-        <option value="m2">m²</option>
-        <option value="cm2">cm²</option>
-        <option value="in2">in²</option>
-        <option value="ft2">ft²</option>
-        <!-- UNIDAD -->
-        <option value="u">unidad</option>
-      </select>
+      <select class="unidad-compra"></select>
+      <div class="help magnitud-compra"></div>
     </td>
-    <td data-label="Precio total"><input type="number" min="0" step="0.01" placeholder="Ej: 10.00"></td>
+
+    <td data-label="Precio total">
+      <input type="number" min="0" step="0.01" placeholder="Ej: 10.00">
+    </td>
+
     <td data-label="Unidad transformación">
-      <select>
-        <option value="">--</option>
-        <!-- MASA -->
-        <option value="kg">kg</option>
-        <option value="g">g</option>
-        <option value="lb">lb</option>
-        <option value="oz">oz</option>
-        <!-- VOLUMEN -->
-        <option value="L">L</option>
-        <option value="ml">ml</option>
-        <option value="gal">gal (US)</option>
-        <option value="floz">oz líquida (US)</option>
-        <!-- LONGITUD -->
-        <option value="m">m</option>
-        <option value="cm">cm</option>
-        <option value="mm">mm</option>
-        <option value="in">pulgada</option>
-        <option value="ft">pie</option>
-        <!-- AREA -->
-        <option value="m2">m²</option>
-        <option value="cm2">cm²</option>
-        <option value="in2">in²</option>
-        <option value="ft2">ft²</option>
-        <!-- UNIDAD -->
-        <option value="u">unidad</option>
-      </select>
+      <select class="unidad-transf" disabled></select>
+      <div class="help magnitud-transf"></div>
     </td>
+
     <td data-label="Cantidad equivalente" class="equivalente">-</td>
     <td data-label="Costo por unidad" class="costo">-</td>
-    <td data-label=""><button class="clear" onclick="eliminarFila(this)">X</button></td>
+    <td data-label="">
+      <button class="clear" onclick="eliminarFila(this)">X</button>
+    </td>
   `;
   tbody.appendChild(fila);
 
+  // Inicializa selects y chips de magnitud
+  _initSelectsFila(fila);
+
+  // Escuchar cambios de inputs para recalcular
   fila.querySelectorAll("input,select").forEach(el => {
     el.addEventListener("input", calcularMateriales);
   });
-  actualizarResumen(); // Actualiza resumen al agregar fila
+
+  actualizarResumen();
 }
 
 function eliminarFila(btn) {

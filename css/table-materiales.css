@@ -71,3 +71,28 @@ TOC:
   #tablaMateriales td:nth-last-child(3),
   #tablaMateriales td:nth-last-child(2){ text-align:right; }
 }
+
+/* Alineación estable en la tabla de Materiales */
+#tablaMateriales th,
+#tablaMateriales td { 
+  vertical-align: top; /* ancla arriba y evita el "baile" */
+}
+
+/* Reserva un pequeño zócalo y posiciona el chip sin empujar el select */
+#tablaMateriales td:has(.magnitud-compra),
+#tablaMateriales td:has(.magnitud-transf) {
+  position: relative;
+  padding-bottom: 18px; /* espacio fijo para el chip */
+}
+
+/* El chip flota dentro de la celda (no cambia el layout) */
+#tablaMateriales .magnitud-compra,
+#tablaMateriales .magnitud-transf {
+  position: absolute;
+  left: 8px;         /* alinea con el padding del input/select */
+  bottom: 4px;
+  margin: 0;         /* anula el margin-top global de .help */
+  font-size: .75rem; 
+  opacity: .75;
+  pointer-events: none; /* no bloquea clics del select */
+}

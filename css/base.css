@@ -21,6 +21,7 @@ TOC:
   --stroke: rgba(255,255,255,.08);
   --radius: 16px;
 }
+
 body {
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
   background: radial-gradient(1200px 600px at 80% -10%, rgba(124,58,237,.25), transparent 60%),
@@ -30,14 +31,17 @@ body {
   margin: 0; padding: 0;
   line-height: 1.5;
 }
+
 h1, h3 {
   color: var(--brand);
   font-weight: 700;
   margin-bottom: 0.1rem;
 }
+
 header p {
   margin-bottom: 0rem; /* Sin espacio extra debajo de la descripción */
 }
+
 label {
   display: block;
   font-weight: 700;
@@ -45,6 +49,7 @@ label {
   color: var(--muted);
   font-size: 0.97rem;
 }
+
 input, select, button {
   width: 100%;
   padding: 0.7rem 1rem;
@@ -57,15 +62,18 @@ input, select, button {
   box-sizing: border-box;
   transition: border-color 0.3s;
 }
+
 input:focus, select:focus {
   border-color: var(--brand);
   outline: none;
   box-shadow: 0 0 6px var(--brand);
 }
+
 /* === PRO POLISH ADDITIONS (tabular nums, help, focus) === */
 body, table, .result, input, select, button {
   font-variant-numeric: tabular-nums;
 }
+
 .help{
   display:block;
   color:var(--muted);
@@ -73,8 +81,16 @@ body, table, .result, input, select, button {
   margin-top:0.25rem;
   line-height:1.3;
 }
+
 input:focus, select:focus {
   border-color: var(--brand);
   outline: none;
   box-shadow: 0 0 0 3px rgba(124,58,237,.25);
 }
+
+/* Feedback sutil cuando el select está deshabilitado */
+select:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
